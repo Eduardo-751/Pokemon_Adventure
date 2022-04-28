@@ -34,6 +34,9 @@ public class BattleManager {
         BattleUi.CreateUI(playerPokemon, opponentPokemon);
     }
 
+    /**
+     * Process the Move used by the Player
+     */
     public void UseMove(Move move) throws InterruptedException {
         if (move.getCurrentPP() > 0) {
             Move opponentMove = opponentPokemon.getMoveSet()[(byte) (Math.random() * opponentPokemon.getMoveSet().length)];
@@ -48,6 +51,9 @@ public class BattleManager {
         }
     }
 
+    /**
+     * Process the move in the Order of the Speed Stats
+     */
     public void ProcessMoveInOrder(Pokemon first, Move moveFirst, Pokemon second, Move moveSecond) throws InterruptedException {
         BattleUi.txtLog.setText("");
         ExecuteMove(first, moveFirst, second);
@@ -61,6 +67,9 @@ public class BattleManager {
         }
     }
 
+    /**
+     * Give the Damage to the Oponnent
+     */
     public void ExecuteMove(Pokemon pokemon, Move move, Pokemon target) {
 
         int Damage = CalculateDamage(pokemon, move, target);
@@ -79,6 +88,9 @@ public class BattleManager {
         BattleUi.RefreshUI(playerPokemon, opponentPokemon);
     }
 
+    /**
+     * Calculate the Damage to the Oponnent
+     */
     private int CalculateDamage(Pokemon pokemon, Move move, Pokemon target) {
         int attack, defense;
         attack = pokemon.getInBattleStat(Stat.ATTACK);
@@ -87,6 +99,9 @@ public class BattleManager {
         return (int) (((attack / (double) defense) * ((2 * pokemon.getLevel() + 10) / 250.0) * move.getPower()) * typeEffectiveness(target, move) + 1);
     }
 
+    /**
+     * Check if the Pokemon who take the Damage is Dead
+     */
     private void CheckDeath(Pokemon poke) {
         if (poke == opponentPokemon) {
             GameManager.StopSound();
@@ -100,6 +115,9 @@ public class BattleManager {
         }
     }
 
+    /**
+     * Check if the Type of the Pokemon have weakness
+     */
     private float typeEffectiveness(Pokemon target, Move move) {
         float typeEffectiveness = 1;
 
@@ -113,10 +131,17 @@ public class BattleManager {
         return typeEffectiveness;
     }
 
+    /**
+     * Call the Method to check if the Pokemon Level Up
+     */
     public int calcExp(Pokemon enemy) {
         return (int) ((enemy.getExpYield() * enemy.getLevel()) / 5.0);
     }
 
+    /**
+     * Gets and Sets
+     *
+     */
     public Pokemon getPokemon() {
         return playerPokemon;
     }

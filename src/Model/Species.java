@@ -37,12 +37,17 @@ public enum Species {
         ExpYield = expYield;
         CatchRate = catchRate;
     }
-
-    //Calculate Exp to Next Level
+    
+    /**
+     * Calculate Exp to Next Level
+     */
     public int calculateExp(int level) {
         return (int) ((4 * Math.pow(level, 3)) / 5);
     }
-
+    
+    /**
+     * Set the HashMap
+     */
     private static Map<Move, Integer> convertToMap(int[] a, Move[] b) {
         Map<Move, Integer> m = new TreeMap<>();
         for (int i = 0; i < a.length; i++) {

@@ -61,7 +61,6 @@ public class MapInterface extends JFrame {
         contentPane.add(lblLocationName);
 
         lblCurrentLocation = new JLabel("");
-        lblCurrentLocation.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Viridian City.png")));
         lblCurrentLocation.setBounds(66, 69, 500, 500);
         contentPane.add(lblCurrentLocation);
 

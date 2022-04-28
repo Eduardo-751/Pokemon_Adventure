@@ -67,8 +67,10 @@ public enum Location {
         PokemonsLivingHere = pokemonLivingHere;
         SpawnChance = spawnChance;
     }
-
-    //Create Grid of the World
+    
+    /**
+     * Create Grid of the World
+     */
     public void CreateGridMap() {
         Location.PALLET_TOWN.setLocationToNorth(Location.ROUTE_01);
         Location.PALLET_TOWN.setLocationToSouth(Location.ROUTE_21);

@@ -15,7 +15,10 @@ public class Player {
         Party = new Pokemon[6];
         CurrentLocation = startLocation;
     }
-
+    
+    /**
+     * Create a Wild Pokemon
+     */
     public Pokemon CreateWildPokemon() {
         int random = new Random().nextInt(100);
         int lvl = new Random().nextInt((CurrentLocation.getMaxLvl() - CurrentLocation.getMinLvl()) + 1) + CurrentLocation.getMinLvl();
@@ -26,6 +29,9 @@ public class Player {
         return null;
     }
     
+    /**
+     * Check if the Pokemon Level up
+     */
     public void CheckLvlUp(Pokemon p) {
         if (p.levelUp()) {
             JOptionPane.showMessageDialog(null, p.getName() + " grew to Level: " + p.getLevel() + "!");

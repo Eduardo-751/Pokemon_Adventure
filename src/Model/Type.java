@@ -30,33 +30,13 @@ public enum Type {
             new String[]{"Ghost"}),
     POISON(new String[]{"Grass"},
             new String[]{"Poison", "Ground", "Rock", "Bug"},
-            new String[]{"Steel"}),
-    FLYING(new String[]{"Fighting", "Grass"},
-            new String[]{"Rock", "Steel", "Electric"},
-            new String[]{}),
-    GROUND(new String[]{"Poison", "Rock", "Steel", "Fire", "Electric"},
-            new String[]{"Bug", "Grass"},
-            new String[]{"Flying"}),
-    GHOST(new String[]{"Ghost", "Psychic"},
-            new String[]{"Steel", "Dark"},
-            new String[]{"Normal"}),
-    STEEL(new String[]{"Rock", "Ice"},
-            new String[]{"Steel", "Fire", "Water", "Electric"},
-            new String[]{}),
-    ELECTRIC(new String[]{"Water", "Flying"},
-            new String[]{"Grass", "Electric", "Dragon"},
-            new String[]{"Ground"}),
-    PSYCHIC(new String[]{"Fighting", "Poison"},
-            new String[]{"Psychic", "Steel"},
-            new String[]{"Dark"}),
-    ICE(new String[]{"Grass", "Ground", "Flying", "Dragon"},
-            new String[]{"Fire", "Water", "Ice", "Steel"},
-            new String[]{});
+            new String[]{"Steel"});
 
     private final String[] SuperEffective;
     private final String[] NotVeryEffective;
     private final String[] NoEffect;
 
+    //Check if the type have weakness
     Type(String[] superEffective, String[] notVeryEffective, String[] noEffect) {
         SuperEffective = superEffective;
         NotVeryEffective = notVeryEffective;

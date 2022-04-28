@@ -22,6 +22,9 @@ public class SoundManager {
         audioUrl[2] = getClass().getResource("/Music/Pokemon Emerald Battle.wav");
     }
 
+    /**
+     * Gets and Sets
+     */
     public void SetClip(int i) {
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(audioUrl[i]);

@@ -35,7 +35,7 @@ import javax.swing.ScrollPaneConstants;
 
 public class BattleInterface extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     private int indice;
     private boolean runAway = false;
     private final Player player;

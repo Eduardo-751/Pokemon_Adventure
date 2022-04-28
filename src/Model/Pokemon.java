@@ -99,6 +99,7 @@ public class Pokemon {
 
     }
 
+    //Function to Reset the Stats
     public void Revive() {
         for (int i = Stat.ATTACK.ordinal(); i <= Stat.SPEED.ordinal(); i++) {
             InBattleStats[i] = CurrentStats[i];
@@ -106,6 +107,7 @@ public class Pokemon {
         InBattleStats[(byte) Stat.HP.ordinal()] = CurrentStats[(byte) Stat.HP.ordinal()];
     }
 
+    //Function to Pick in the HashMao the Move Set
     private void initializeMoves() {
         for (Move m : Species.getLearnset().keySet()) {
             if (Species.getLearnset().get(m) <= Level) {
@@ -119,6 +121,7 @@ public class Pokemon {
         }
     }
 
+    //Function to Learn the Move
     public boolean LearnNewMove(Move m) {
         boolean aux = false;
         for (int i = 0; i < MoveSet.length; i++) {
@@ -131,6 +134,7 @@ public class Pokemon {
         return aux;
     }
 
+    //Function to Check if have move to Learn
     public Move canLearnNewMove() {
         for (Move m : Species.getLearnset().keySet()) {
             if (Species.getLearnset().get(m) == Level) {

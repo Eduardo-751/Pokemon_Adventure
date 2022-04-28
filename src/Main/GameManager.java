@@ -19,6 +19,9 @@ public class GameManager {
         PlaySound(0);
     }
 
+    /**
+     * Gets and Sets
+     */
     public static Player getPlayer() {
         return player;
     }

@@ -95,6 +95,7 @@ public final class GameInterface extends JFrame {
         tabbedPane.setBounds(0, 0, 605, 497);
         panelPokemon.add(tabbedPane);
 
+        //Button to open the Map Frame
         JButton btnMap = new JButton("Map");
         btnMap.addActionListener((ActionEvent e) -> {
             MapUi.setVisible(true);
@@ -102,6 +103,7 @@ public final class GameInterface extends JFrame {
         btnMap.setBounds(10, 11, 272, 55);
         contentPane.add(btnMap);
 
+        //Button to Call the frame of the Battle
         JButton btnBattle = new JButton("Battle");
         btnBattle.addActionListener((ActionEvent e) -> {
             
@@ -118,6 +120,7 @@ public final class GameInterface extends JFrame {
         btnBattle.setBounds(10, 77, 272, 55);
         contentPane.add(btnBattle);
 
+        //Button to Heal
         JButton btnHeal = new JButton("Heal");
         btnHeal.addActionListener((ActionEvent e) -> {
             if (player.getCurrentLocation().HasPokeCenter) {

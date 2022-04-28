@@ -5,7 +5,10 @@
         <group>
             <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/PokemonAdventure/src/Main/GameManager.java</file>
             <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/PokemonAdventure/src/Model/Location.java</file>
+            <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/PokemonAdventure/src/Model/Move.java</file>
+            <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/PokemonAdventure/src/View/MapInterface.java</file>
             <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/PokemonAdventure/src/Model/Pokemon.java</file>
+            <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/PokemonAdventure/src/Model/Species.java</file>
             <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/PokemonAdventure/src/View/BattleInterface.java</file>
             <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/PokemonAdventure/src/Model/Player.java</file>
             <file>file:/C:/Users/eduar/OneDrive/Documentos/NetBeansProjects/PokemonAdventure/src/Main/BattleManager.java</file>
