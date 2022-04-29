@@ -39,7 +39,7 @@ public enum Location {
     ROUTE_26(false, false, Move.CUT, "Route 26", new int[]{}, new Species[]{}, 28, 30),
     ROUTE_27(false, false, null, "Route 27", new int[]{}, new Species[]{},  28, 32),
     ROUTE_28(false, false, Move.CUT, "Route 28", new int[]{}, new Species[]{}, 40, 43),
-    VIRIDIAN_FOREST(false, false, null, "Viridian Forest", new int[]{60, 50, 40, 0}, new Species[]{Species.CATERPIE, Species.KAKUNA, Species.METAPOD, Species.WEEDLE}, 3, 8),
+    VIRIDIAN_FOREST(false, false, null, "Viridian Forest", new int[]{40, 50, 60, 100}, new Species[]{Species.CATERPIE, Species.KAKUNA, Species.METAPOD, Species.WEEDLE}, 3, 8),
     KANTO_POWER_PLANT(false, false, null, "Kanto Power Plant", new int[]{}, new Species[]{}, 20, 37),
     ROCK_TUNNEL(false, false, null, "Rock Tunnel", new int[]{}, new Species[]{}, 13, 18),
     MT_MOON_SQUARE(true, true, Move.DIG, "Mt Moon Square", null, null, 0, 0),
