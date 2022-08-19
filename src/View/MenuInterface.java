@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 public class MenuInterface extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-    private final JPanel contentPane;
+    private final JPanel contentPane  = new JPanel();
     private Player player;
 
     /**
@@ -30,9 +30,9 @@ public class MenuInterface extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setBounds(100, 100, 1920, 1080);
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setUndecorated(true);
+        
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         contentPane.setLayout(null);
         setContentPane(contentPane);
 
@@ -60,10 +60,10 @@ public class MenuInterface extends JFrame {
         btnExit.setFont(new Font("Old English Text MT", Font.BOLD, 35));
         btnExit.setBounds(894, 863, 269, 64);
         contentPane.add(btnExit);
-
+        
         JLabel lblBackground = new JLabel("");
         lblBackground.setBounds(0, -15, 1920, 1108);
-        lblBackground.setIcon(new ImageIcon(MenuInterface.class.getResource("/Img/wallpaper.jpg")));
+        lblBackground.setIcon(new ImageIcon(MenuInterface.class.getResource("/Img/wallpaperMenu.jpg")));
         contentPane.add(lblBackground);
     }
 }

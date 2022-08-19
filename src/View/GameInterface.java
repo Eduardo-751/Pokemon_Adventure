@@ -69,13 +69,14 @@ public final class GameInterface extends JFrame {
 
         player = p;
         MapUi = new MapInterface(player);
-
+        MapUi.setVisible(true);
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 1000, 760);
+        setBounds(20, 330, 1000, 720);
+        setUndecorated(true);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
         contentPane.setLayout(null);
-        setLocationRelativeTo(null);
         setContentPane(contentPane);
 
         JLabel lblAsh = new JLabel("");
@@ -96,12 +97,12 @@ public final class GameInterface extends JFrame {
         panelPokemon.add(tabbedPane);
 
         //Button to open the Map Frame
-        JButton btnMap = new JButton("Map");
-        btnMap.addActionListener((ActionEvent e) -> {
-            MapUi.setVisible(true);
+        JButton btnStore = new JButton("Store");
+        btnStore.addActionListener((ActionEvent e) -> {
+            
         });
-        btnMap.setBounds(10, 11, 272, 55);
-        contentPane.add(btnMap);
+        btnStore.setBounds(10, 11, 272, 55);
+        contentPane.add(btnStore);
 
         //Button to Call the frame of the Battle
         JButton btnBattle = new JButton("Battle");
@@ -147,7 +148,7 @@ public final class GameInterface extends JFrame {
 
         JLabel lblBackground = new JLabel("");
         lblBackground.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/menu_background.png")));
-        lblBackground.setBounds(0, 0, 984, 721);
+        lblBackground.setBounds(0, 0, 1000, 720);
         contentPane.add(lblBackground);
     }
 

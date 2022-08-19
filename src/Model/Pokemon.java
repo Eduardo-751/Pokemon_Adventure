@@ -6,10 +6,11 @@ public class Pokemon {
 
     private final Species Species;
     private byte Level;
-    //HP, Attack, Defense, Sp. Attack, Sp. Defense, Speed
     private final Move[] MoveSet = new Move[4];
+  //HP, Attack, Defense, Sp. Attack, Sp. Defense, Speed
     private int[] CurrentStats;
     private final int[] InBattleStats;
+    private boolean[] status;
     private int ExpToNextLvl, CurrentExp;
 
     /**
@@ -24,6 +25,7 @@ public class Pokemon {
         InBattleStats = new int[6];
         Level = (byte) level;
 
+        status = new boolean[] {false, false, false, false, false, false};
         //Update the Stats
         CurrentStats = new int[]{
             CalculateStat(Stat.HP),
@@ -81,7 +83,6 @@ public class Pokemon {
     //Function to Calculate Damage
     public void takeDamage(int damage) {
         InBattleStats[(byte) Stat.HP.ordinal()] -= (short) damage;
-
         if (InBattleStats[(byte) Stat.HP.ordinal()] < 0) {
             InBattleStats[(byte) Stat.HP.ordinal()] = 0;
         }
@@ -89,7 +90,7 @@ public class Pokemon {
 
     //Function that checks if your pokemon is Dead
     public boolean isFainted() {
-        return InBattleStats[(byte) Stat.HP.ordinal()] <= 0;
+        return InBattleStats[Stat.HP.ordinal()] <= 0;
     }
 
     //Calculates any stat.
@@ -105,6 +106,10 @@ public class Pokemon {
             InBattleStats[i] = CurrentStats[i];
         }
         InBattleStats[(byte) Stat.HP.ordinal()] = CurrentStats[(byte) Stat.HP.ordinal()];
+        for(byte i = (byte)Status.POISON.ordinal(); i <= (byte)Status.SEED.ordinal(); i++)
+        {
+            status[i] = false;
+        }
     }
 
     //Function to Pick in the HashMao the Move Set
@@ -144,6 +149,21 @@ public class Pokemon {
         return null;
     }
 
+    //Function to Calculate The capture method in Generation I
+	public boolean calculateCatchRate(int ball) {
+		int ballModifire;
+		if(ball==200)
+			ballModifire=9;
+		else
+			ballModifire=12;
+		if((Math.random() * ball) < Species.getCatchRate()) {
+			if ((Math.random() * 255) <= (CurrentStats[(byte) Stat.HP.ordinal()] * 1020) / (InBattleStats[(byte) Stat.HP.ordinal()] * ballModifire)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
     /**
      * Gets and Sets
      *
@@ -173,7 +193,7 @@ public class Pokemon {
         return Species;
     }
 
-    public Type getType() {
+    public Type[] getType() {
         return Species.getType();
     }
 
@@ -192,7 +212,11 @@ public class Pokemon {
     public int getCatchRate() {
         return Species.getCatchRate();
     }
-
+    
+    public boolean[] getStatus() {
+        return status;
+    }
+    
     public Move[] getMoveSet() {
         byte count = (byte) MoveSet.length;
         for (Move m : MoveSet) {

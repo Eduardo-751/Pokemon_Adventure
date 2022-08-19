@@ -8,7 +8,6 @@ import Model.Player;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JLabel;
@@ -43,25 +42,25 @@ public class MapInterface extends JFrame {
             }
         });
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 640, 640);
+        setBounds(20, 20, 335, 305);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
         setUndecorated(true);
         contentPane.setLayout(null);
-        setLocationRelativeTo(null);
         setContentPane(contentPane);
         lblLocationName.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/WoodPanel.png")));
         lblLocationName.setForeground(Color.BLACK);
-        lblLocationName.setFont(new Font("Tahoma", Font.PLAIN, 42));
+        lblLocationName.setFont(new Font("Tahoma", Font.PLAIN, 18));
         lblLocationName.setBackground(Color.WHITE);
 
         lblLocationName.setHorizontalTextPosition(SwingConstants.CENTER);
         lblLocationName.setHorizontalAlignment(SwingConstants.CENTER);
-        lblLocationName.setBounds(81, 509, 485, 60);
+        lblLocationName.setBounds(80, 280, 159, 25);
         contentPane.add(lblLocationName);
 
         lblCurrentLocation = new JLabel("");
-        lblCurrentLocation.setBounds(66, 69, 500, 500);
+        lblCurrentLocation.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Location/Pallet Town.png")));
+        lblCurrentLocation.setBounds(70, 71, 192, 145);
         contentPane.add(lblCurrentLocation);
 
         btnUp.setAlignmentY(Component.TOP_ALIGNMENT);
@@ -80,7 +79,7 @@ public class MapInterface extends JFrame {
                 }
             }
         });
-        btnUp.setBounds(301, 11, 50, 50);
+        btnUp.setBounds(130, 11, 50, 50);
         contentPane.add(btnUp);
 
         btnLeft.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/divisa-esquerda.png")));
@@ -98,7 +97,7 @@ public class MapInterface extends JFrame {
                 }
             }
         });
-        btnLeft.setBounds(10, 300, 50, 50);
+        btnLeft.setBounds(10, 150, 50, 50);
         contentPane.add(btnLeft);
 
         btnRight.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/divisa-direita.png")));
@@ -117,7 +116,7 @@ public class MapInterface extends JFrame {
             }
 
         });
-        btnRight.setBounds(574, 300, 50, 50);
+        btnRight.setBounds(272, 150, 50, 50);
         contentPane.add(btnRight);
 
         btnDown.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/divisa-para-baixo.png")));
@@ -135,19 +134,12 @@ public class MapInterface extends JFrame {
                 }
             }
         });
-        btnDown.setBounds(301, 574, 50, 50);
+        btnDown.setBounds(130, 227, 50, 50);
         contentPane.add(btnDown);
 
-        JButton btnClose = new JButton("Close");
-        btnClose.addActionListener((ActionEvent e) -> {
-            dispose();
-        });
-        btnClose.setBounds(549, 11, 75, 25);
-        contentPane.add(btnClose);
-
         JLabel lblBackground = new JLabel("");
-        lblBackground.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/MapKanto.png")));
-        lblBackground.setBounds(0, 0, 640, 640);
+        lblBackground.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Location/MapKanto.png")));
+        lblBackground.setBounds(0, 0, 335, 305);
         contentPane.add(lblBackground);
     }
 
@@ -174,7 +166,7 @@ public class MapInterface extends JFrame {
             btnLeft.setVisible(true);
         }
 
-        lblCurrentLocation.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/" + Player.getCurrentLocation().getImgUrl() + ".png")));
+        lblCurrentLocation.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Location/" + Player.getCurrentLocation().getImgUrl() + ".png")));
         lblLocationName.setText(Player.getCurrentLocation().getImgUrl());
     }
 }

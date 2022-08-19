@@ -22,10 +22,11 @@ public class Player {
     public Pokemon CreateWildPokemon() {
         int random = new Random().nextInt(100);
         int lvl = new Random().nextInt((CurrentLocation.getMaxLvl() - CurrentLocation.getMinLvl()) + 1) + CurrentLocation.getMinLvl();
-        for(int i=0; i<CurrentLocation.getSpawnChance().length ; i++) 
-            if (CurrentLocation.getSpawnChance()[i] >= random)
-            	return new Pokemon(CurrentLocation.getPokemonsLivingHere()[i], lvl);
-        
+        for (Species s : CurrentLocation.getPokemonsLivingHere().keySet()) {
+            if (CurrentLocation.getPokemonsLivingHere().get(s) >= random) {
+            	return new Pokemon(s, lvl);
+            }
+        }        
         return null;
     }
     

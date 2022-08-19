@@ -25,7 +25,6 @@ public class GameManager {
     public static Player getPlayer() {
         return player;
     }
-
     public static void setPlayer(Player player) {
         GameManager.player = player;
     }

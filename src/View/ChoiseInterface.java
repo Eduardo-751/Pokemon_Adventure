@@ -1,12 +1,10 @@
 package View;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import Main.GameManager;
@@ -16,6 +14,7 @@ import Model.Species;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 
 public class ChoiseInterface extends JFrame {
 
@@ -32,28 +31,31 @@ public class ChoiseInterface extends JFrame {
         player = p;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 1033, 768);
+        setBounds(0, 0, 800, 480);
         contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
         setUndecorated(true);
         contentPane.setLayout(null);
         setLocationRelativeTo(null);
         setContentPane(contentPane);
 
         JLabel lblStarter = new JLabel("");
-        lblStarter.setBounds(384, 11, 238, 238);
+        lblStarter.setBounds(285, 55, 238, 238);
         contentPane.add(lblStarter);
 
         JLabel lblBulbassauro = new JLabel("");
-        lblBulbassauro.setBounds(234, 271, 142, 143);
+        lblBulbassauro.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+        lblBulbassauro.setBounds(157, 235, 149, 152);
         contentPane.add(lblBulbassauro);
 
         JLabel lblCharmander = new JLabel("");
-        lblCharmander.setBounds(436, 330, 149, 152);
+        lblCharmander.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+        lblCharmander.setBounds(338, 304, 149, 152);
         contentPane.add(lblCharmander);
 
         JLabel lblSquirtle = new JLabel("");
-        lblSquirtle.setBounds(645, 271, 142, 143);
+        lblSquirtle.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+        lblSquirtle.setBounds(513, 235, 149, 152);
         contentPane.add(lblSquirtle);
 
         lblBulbassauro.addMouseListener(new MouseAdapter() {
@@ -69,10 +71,9 @@ public class ChoiseInterface extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/001.png")));
-                lblSquirtle.setBorder(null);
-                lblCharmander.setBorder(null);
-                Border border = BorderFactory.createBevelBorder(0);
-                lblBulbassauro.setBorder(border);
+                lblBulbassauro.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Open.png")));
+                lblSquirtle.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+                lblCharmander.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
             }
         });
 
@@ -90,10 +91,9 @@ public class ChoiseInterface extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/004.png")));
-                lblBulbassauro.setBorder(null);
-                lblSquirtle.setBorder(null);
-                Border border = BorderFactory.createBevelBorder(0);
-                lblCharmander.setBorder(border);
+                lblCharmander.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Open.png")));
+                lblBulbassauro.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+                lblSquirtle.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
             }
         });
 
@@ -110,16 +110,15 @@ public class ChoiseInterface extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/007.png")));
-                lblBulbassauro.setBorder(null);
-                lblCharmander.setBorder(null);
-                Border border = BorderFactory.createBevelBorder(0);
-                lblSquirtle.setBorder(border);
+                lblSquirtle.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Open.png")));
+                lblBulbassauro.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+                lblCharmander.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
             }
         });
 
         JLabel lblChossePokemon = new JLabel("");
-        lblChossePokemon.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/ChoosePokemon.jpg")));
-        lblChossePokemon.setBounds(0, 0, 1024, 729);
+        lblChossePokemon.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/ChoosePokemon.png")));
+        lblChossePokemon.setBounds(0, 0, 800, 480);
         contentPane.add(lblChossePokemon);
     }
 

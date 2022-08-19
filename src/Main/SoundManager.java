@@ -17,9 +17,9 @@ public class SoundManager {
     public URL audioIntro;
 
     public SoundManager() {
-        audioUrl[0] = getClass().getResource("/Music/Pokemon Emerald Intro.wav");
-        audioUrl[1] = getClass().getResource("/Music/Pokemon Emerald Menu.wav");
-        audioUrl[2] = getClass().getResource("/Music/Pokemon Emerald Battle.wav");
+        audioUrl[0] = getClass().getResource("/Music/Pokemon Emerald Intro.mid");
+        audioUrl[1] = getClass().getResource("/Music/Pokemon Emerald Menu.mid");
+        audioUrl[2] = getClass().getResource("/Music/Pokemon Emerald Battle.mid");
     }
 
     /**
