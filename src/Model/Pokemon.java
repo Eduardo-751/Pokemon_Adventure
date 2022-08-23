@@ -2,14 +2,16 @@ package Model;
 
 import java.util.Arrays;
 
+import javax.swing.JOptionPane;
+
 public class Pokemon {
 
-    private final Species Species;
+    private Species Specie;
     private byte Level;
     private final Move[] MoveSet = new Move[4];
   //HP, Attack, Defense, Sp. Attack, Sp. Defense, Speed
     private int[] CurrentStats;
-    private final int[] InBattleStats;
+    private int[] InBattleStats;
     private boolean[] status;
     private int ExpToNextLvl, CurrentExp;
 
@@ -21,7 +23,7 @@ public class Pokemon {
      * @param level Level to Start Pokemon
      */
     public Pokemon(Species species, int level) {
-        Species = species;
+    	Specie = species;
         InBattleStats = new int[6];
         Level = (byte) level;
 
@@ -56,7 +58,7 @@ public class Pokemon {
     public boolean levelUp() {
         if (CurrentExp >= ExpToNextLvl) {
             Level++;
-            ExpToNextLvl = Species.calculateExp(Level + 1);
+            ExpToNextLvl = Specie.calculateExp(Level + 1);
 
             System.arraycopy(CurrentStats, 0, InBattleStats, 0, CurrentStats.length);
 
@@ -68,13 +70,32 @@ public class Pokemon {
                 CalculateStat(Stat.SP_ATTACK),
                 CalculateStat(Stat.SP_DEFENSE),
                 CalculateStat(Stat.SPEED)};
-
             Revive();
             return true;
         }
         return false;
     }
 
+    //Function to Change de Specie of the Pokemon
+	public void Evolve() {
+		if(!Specie.hasEvolution()) {
+        	if(Specie.getEvolutionLevel() <= Level) {
+        		Species s = Specie.getEvolutionSpecie();
+        		int dialogResult = JOptionPane.showConfirmDialog(null, Specie.getName() + " Can Evolve to " + s.getName() + "!", "Confirm", JOptionPane.YES_NO_OPTION);
+        		if (dialogResult == JOptionPane.YES_OPTION) {
+        			Specie = s;
+        			CurrentStats = new int[]{
+        	                CalculateStat(Stat.HP),
+        	                CalculateStat(Stat.ATTACK),
+        	                CalculateStat(Stat.DEFENSE),
+        	                CalculateStat(Stat.SP_ATTACK),
+        	                CalculateStat(Stat.SP_DEFENSE),
+        	                CalculateStat(Stat.SPEED)};
+                }
+        	}
+        }
+	}
+	
     //Function to increase Exp
     public void AddExp(int newExp) {
         CurrentExp += newExp;
@@ -95,8 +116,8 @@ public class Pokemon {
 
     //Calculates any stat.
     private int CalculateStat(Stat stat) {
-        return ((stat == Stat.HP ? ((Species.getBaseStat((byte) stat.ordinal()) * 2 * Level) / 100 + Level + 10)
-                : ((Species.getBaseStat((byte) stat.ordinal()) * 2 * Level) / 100 + 5)));
+        return ((stat == Stat.HP ? ((Specie.getBaseStat((byte) stat.ordinal()) * 2 * Level) / 100 + Level + 10)
+                : ((Specie.getBaseStat((byte) stat.ordinal()) * 2 * Level) / 100 + 5)));
 
     }
 
@@ -114,8 +135,8 @@ public class Pokemon {
 
     //Function to Pick in the HashMao the Move Set
     private void initializeMoves() {
-        for (Move m : Species.getLearnset().keySet()) {
-            if (Species.getLearnset().get(m) <= Level) {
+        for (Move m : Specie.getLearnset().keySet()) {
+            if (Specie.getLearnset().get(m) <= Level) {
                 for (int i = 0; i < MoveSet.length; i++) {
                     if (MoveSet[i] == null) {
                         MoveSet[i] = m;
@@ -141,8 +162,8 @@ public class Pokemon {
 
     //Function to Check if have move to Learn
     public Move canLearnNewMove() {
-        for (Move m : Species.getLearnset().keySet()) {
-            if (Species.getLearnset().get(m) == Level) {
+        for (Move m : Specie.getLearnset().keySet()) {
+            if (Specie.getLearnset().get(m) == Level) {
                 return m;
             }
         }
@@ -156,13 +177,25 @@ public class Pokemon {
 			ballModifire=9;
 		else
 			ballModifire=12;
-		if((Math.random() * ball) < Species.getCatchRate()) {
+		if((Math.random() * ball) < Specie.getCatchRate()) {
 			if ((Math.random() * 255) <= (CurrentStats[(byte) Stat.HP.ordinal()] * 1020) / (InBattleStats[(byte) Stat.HP.ordinal()] * ballModifire)) {
 				return true;
 			}
 		}
 		return false;
 	}
+	
+    public void InBattleStatusIncrease(Move move){
+    	for (int i = Stat.ATTACK.ordinal(); i <= Stat.SPEED.ordinal(); i++) {
+            InBattleStats[i] += move.getStatEffect()[i];
+        }
+    }
+    
+    public void InBattleStatusDecrease(Move move){
+    	for (int i = Stat.ATTACK.ordinal(); i <= Stat.SPEED.ordinal(); i++) {
+            InBattleStats[i] -= move.getStatEffect()[i];
+        }
+    }
 
     /**
      * Gets and Sets
@@ -172,51 +205,42 @@ public class Pokemon {
     public int getInBattleHp() {
         return InBattleStats[(byte) Stat.HP.ordinal()];
     }
-
-    public int getInBattleStat(final Stat stat) throws ArrayIndexOutOfBoundsException {
+    public int getInBattleStat(final Stat stat) {
         return InBattleStats[(byte) stat.ordinal()];
     }
-
-    public int getCurrentStat(final Stat stat) throws ArrayIndexOutOfBoundsException {
+    public void setInBattleStats(int[] inBattleStats) {
+		InBattleStats = inBattleStats;
+	}
+	public int getCurrentStat(final Stat stat) throws ArrayIndexOutOfBoundsException {
         return CurrentStats[(byte) stat.ordinal()];
     }
-
     public int getLevel() {
         return Level;
     }
-
     public String getName() {
-        return Species.getName();
+        return Specie.getName();
     }
-
     public Species getSpecie() {
-        return Species;
+        return Specie;
     }
-
     public Type[] getType() {
-        return Species.getType();
+        return Specie.getType();
     }
-
     public int getExp() {
         return CurrentExp;
     }
-
     public int getExpToNextLvl() {
         return ExpToNextLvl;
     }
-
     public int getExpYield() {
-        return Species.getExpYield();
+        return Specie.getExpYield();
     }
-
     public int getCatchRate() {
-        return Species.getCatchRate();
+        return Specie.getCatchRate();
     }
-    
     public boolean[] getStatus() {
         return status;
     }
-    
     public Move[] getMoveSet() {
         byte count = (byte) MoveSet.length;
         for (Move m : MoveSet) {

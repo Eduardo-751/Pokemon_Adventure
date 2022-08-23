@@ -2,5 +2,5 @@ package Model;
 
 public enum MoveType
 {
-    PHYSICAL, SPECIAL, STATUS;
+    PHYSICAL, SPECIAL, STATUS, ENEMYSTATUS;
 }

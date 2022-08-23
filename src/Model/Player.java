@@ -36,6 +36,7 @@ public class Player {
     public void CheckLvlUp(Pokemon p) {
         if (p.levelUp()) {
             JOptionPane.showMessageDialog(null, p.getName() + " grew to Level: " + p.getLevel() + "!");
+            p.Evolve();
             Move aux = p.canLearnNewMove();
             if (aux != null) {
                 int dialogResult = JOptionPane.showConfirmDialog(null, "You Can Learning " + aux.getName() + "!", "Confirm", JOptionPane.YES_NO_OPTION);

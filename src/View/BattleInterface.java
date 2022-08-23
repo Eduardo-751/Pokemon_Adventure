@@ -65,6 +65,11 @@ public class BattleInterface extends JFrame {
 				indice = bm.Indice;
 				if (battleManager.getOpponent() != null && battleManager.getPokemon() != null) {
 					RefreshUI(battleManager.getPokemon(), battleManager.getOpponent());
+					for (int i = 0; i < battleManager.getPokemon().getMoveSet().length; i++) {
+						if (btnMove[i] == null) {
+							ContainerFight.add(CreateMoveButtons(i));
+						}
+					}
 				}
 			}
 
@@ -155,15 +160,6 @@ public class BattleInterface extends JFrame {
 
 		JButton btnFight = new JButton("Fight");
 		btnFight.addActionListener((ActionEvent e) -> {
-			if (battleManager.getPokemon().getMoveSet() != null) {
-				for (int i = 0; i < battleManager.getPokemon().getMoveSet().length; i++) {
-					if (btnMove[i] == null) {
-						ContainerFight.add(CreateMoveButtons(i));
-					} else {
-						RefreshMoveButtons(i);
-					}
-				}
-			}
 			ContainerMenu.setVisible(false);
 			ContainerFight.setVisible(true);
 		});
@@ -241,13 +237,13 @@ public class BattleInterface extends JFrame {
 							"Your Chosse " + player.getParty()[indice].getName() + "!");
 					battleManager.setPokemon(player.getParty()[indice]);
 					RefreshUI(battleManager.getPokemon(), battleManager.getOpponent());
-					if (battleManager.getPokemon().getMoveSet() != null) {
-						for (int i = 0; i < battleManager.getPokemon().getMoveSet().length; i++) {
-							if (btnMove[i] == null) {
+					if (battleManager.getOpponent() != null && battleManager.getPokemon() != null) {
+						RefreshUI(battleManager.getPokemon(), battleManager.getOpponent());
+						for (int i = 0; i < 4; i++) {
+							if (btnMove[i] != null) 
+								ContainerFight.remove(btnMove[i]);
+							if (battleManager.getPokemon().getMoveSet().length > i)
 								ContainerFight.add(CreateMoveButtons(i));
-							} else {
-								RefreshMoveButtons(i);
-							}
 						}
 					}
 					ContainerPokemon.setVisible(false);
@@ -398,37 +394,7 @@ public class BattleInterface extends JFrame {
 		} else {
 			btnMove[indice].setBounds(50 + (226 * (indice - 2)), 130, 216, 71);
 		}
-
 		return btnMove[indice];
-	}
-
-	/**
-	 * Update the Moves Button.
-	 *
-	 * @param indice The Indice to Match the Move if the Button
-	 */
-	public void RefreshMoveButtons(int indice) {
-		Move move = battleManager.getPokemon().getMoveSet()[indice];
-		btnMove[indice].setText(move.getName());
-		btnMove[indice].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				try {
-					battleManager.UseMove(move);
-					ContainerFight.setVisible(false);
-					if (!battleManager.getPokemon().isFainted()) {
-						ContainerMenu.setVisible(true);
-					}
-				} catch (InterruptedException ex) {
-					Logger.getLogger(BattleInterface.class.getName()).log(Level.SEVERE, null, ex);
-				}
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				MoveDetails(move);
-			}
-		});
 	}
 
 	/**

@@ -54,47 +54,58 @@ public class BattleManager {
 	 */
 	public void ProcessMoveInOrder(Pokemon first, Move moveFirst, Pokemon second, Move moveSecond) {
 		BattleUi.txtLog.setText("");
-		ExecuteMove(first, moveFirst, second);
+		int Damage = 0;
+		Damage = ExecuteMove(first, moveFirst, second);
+		second.takeDamage(Damage);
 		if (second.isFainted()) {
 			ProcessDeath(second);
 		} else if (!moveSecond.equals(Move.FISSURE)) {
-			ExecuteMove(second, moveSecond, first);
+			Damage = ExecuteMove(second, moveSecond, first);
+			first.takeDamage(Damage);
 			if (first.isFainted()) {
 				ProcessDeath(first);
 			}
 		} else {
 			BattleUi.txtLog.setText(BattleUi.txtLog.getText() + second.getName() + " Miss\n");
 		}
+		BattleUi.RefreshUI(playerPokemon, opponentPokemon);
 	}
 
 	/**
 	 * Give the Damage to the Oponnent
 	 */
-	@SuppressWarnings("unlikely-arg-type")
-	public void ExecuteMove(Pokemon pokemon, Move move, Pokemon target) {
+	public int ExecuteMove(Pokemon pokemon, Move move, Pokemon target) {
+		int Damage = 0;
 		str = "";
-		int Damage = CalculateDamage(pokemon, move, target);
-		if (move.getType().equals(MoveType.STATUS)) {
-			BattleUi.txtLog.setText(
-					BattleUi.txtLog.getText() + pokemon.getName() + " Used  " + move.getName() + "!\n" + str + "\n");
-		} else {
-			if ((byte) (Math.random() * 100) <= move.getAccuracy()) {
-
-				if (move.equals(Move.NIGHT_SHADE) || move.equals(Move.SEISMIC_TOSS))
-					target.takeDamage(target.getLevel());
-				else if (move.equals(Move.PSYWAVE))
-					target.takeDamage((int) (Math.random() * (target.getLevel() * 1.5)));
-				else if (move.equals(Move.SUPER_FANG))
-					target.takeDamage((int) (target.getInBattleStat(Stat.HP) * 0.5));
-				else
-					target.takeDamage(Damage);
-				BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Used  " + move.getName()
-						+ "!\n" + str + "\n");
-			} else {
-				BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Miss\n");
+		if ((byte) (Math.random() * 100) <= move.getAccuracy()) {
+			if (MoveType.STATUS.equals(move.getMoveType())) {
+				BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Used  " + move.getName() + "!\n" + str + "\n");
+				pokemon.InBattleStatusIncrease(move);
+			} 
+			else if(MoveType.ENEMYSTATUS.equals(move.getMoveType())){
+				BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Used  " + move.getName() + "!\n" + str + "\n");
+				target.InBattleStatusDecrease(move);
 			}
-			BattleUi.RefreshUI(playerPokemon, opponentPokemon);
+			else {
+				if (move.equals(Move.NIGHT_SHADE) || move.equals(Move.SEISMIC_TOSS)) {
+					Damage = target.getLevel();
+					//target.takeDamage(Damage);
+				} else if (move.equals(Move.PSYWAVE)) {
+					Damage = (int) (Math.random() * (target.getLevel() * 1.5));
+					//target.takeDamage(Damage);
+				} else if (move.equals(Move.SUPER_FANG)) {
+					Damage = (int) (target.getInBattleHp() * 0.5);
+					//target.takeDamage(Damage);
+				} else {
+					Damage = CalculateDamage(pokemon, move, target);
+					//target.takeDamage(Damage);
+				}
+				BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Used  " + move.getName() + "!\nDid " + Damage + " Damage" + str + "\n\n");
+			}
+		} else {
+			BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Miss\n");
 		}
+		return Damage;
 	}
 
 	/**
