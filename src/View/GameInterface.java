@@ -205,7 +205,7 @@ public final class GameInterface extends JFrame {
             container[indice].add(xpBar[indice]);
 
             lblImg[indice] = new JLabel("");
-            lblImg[indice].setIcon(new ImageIcon(GameInterface.class.getResource("/Img/" + poke.getSpecie().getDexNumber() + ".png")));
+            lblImg[indice].setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
             lblImg[indice].setBounds(326, 190, 238, 238);
             container[indice].add(lblImg[indice]);
 
@@ -230,6 +230,6 @@ public final class GameInterface extends JFrame {
         lblSpeed[indice].setText("Speed: " + poke.getCurrentStat(Stat.SPEED));
         xpBar[indice].setMaximum(poke.getExpToNextLvl() - poke.getSpecie().calculateExp(poke.getLevel()));
         xpBar[indice].setValue(poke.getExp() - poke.getSpecie().calculateExp(poke.getLevel()));
-        lblImg[indice].setIcon(new ImageIcon(GameInterface.class.getResource("/Img/" + poke.getSpecie().getDexNumber() + ".png")));
+        lblImg[indice].setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
     }
 }

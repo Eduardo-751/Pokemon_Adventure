@@ -28,8 +28,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
@@ -77,7 +75,6 @@ public class BattleInterface extends JFrame {
 			public void windowClosed(WindowEvent e) {
 				if (battleManager.getOpponent().isFainted()) {
 					int aux = battleManager.calcExp(battleManager.getOpponent());
-					JOptionPane.showMessageDialog(null, battleManager.getPokemon().getName() + " gained " + aux + "!");
 					battleManager.getPokemon().AddExp(aux);
 				} else if (battleManager.getPokemon().isFainted()) {
 					JOptionPane.showMessageDialog(null, "All your pokemon is Dead!");
@@ -232,12 +229,14 @@ public class BattleInterface extends JFrame {
 				if (player.getParty()[indice].getInBattleHp() <= 0) {
 					JOptionPane.showMessageDialog(null,
 							"Your Pokemon " + player.getParty()[indice].getName() + " is Dead!");
+					indice = 0;
+					ChangePokemon();
 				} else {
 					JOptionPane.showMessageDialog(null,
 							"Your Chosse " + player.getParty()[indice].getName() + "!");
 					battleManager.setPokemon(player.getParty()[indice]);
 					RefreshUI(battleManager.getPokemon(), battleManager.getOpponent());
-					if (battleManager.getOpponent() != null && battleManager.getPokemon() != null) {
+					//if (battleManager.getOpponent() != null && battleManager.getPokemon() != null) {
 						RefreshUI(battleManager.getPokemon(), battleManager.getOpponent());
 						for (int i = 0; i < 4; i++) {
 							if (btnMove[i] != null) 
@@ -245,7 +244,7 @@ public class BattleInterface extends JFrame {
 							if (battleManager.getPokemon().getMoveSet().length > i)
 								ContainerFight.add(CreateMoveButtons(i));
 						}
-					}
+					//}
 					ContainerPokemon.setVisible(false);
 					ContainerMenu.setVisible(true);
 				}
@@ -286,7 +285,7 @@ public class BattleInterface extends JFrame {
 		ContainerPokemon.add(btnPrevius);
 
 		lblChangePokemon = new JLabel("");
-		lblChangePokemon.setIcon(new ImageIcon(BattleInterface.class.getResource("/Img/004.png")));
+		lblChangePokemon.setIcon(new ImageIcon(BattleInterface.class.getResource("/Img/Icon/004.png")));
 		lblChangePokemon.setBounds(361, 0, 238, 238);
 		ContainerPokemon.add(lblChangePokemon);
 
@@ -371,16 +370,10 @@ public class BattleInterface extends JFrame {
 		btnMove[indice].addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					battleManager.UseMove(move);
-					move.downPP();
-					ContainerFight.setVisible(false);
-					if (!battleManager.getPokemon().isFainted()) {
-						ContainerMenu.setVisible(true);
-					}
-				} catch (InterruptedException ex) {
-					Logger.getLogger(BattleInterface.class.getName()).log(Level.SEVERE, null, ex);
-				}
+				ContainerFight.setVisible(false);
+				ContainerMenu.setVisible(true);
+				battleManager.UseMove(move);
+				move.downPP();
 			}
 
 			@Override
@@ -429,7 +422,7 @@ public class BattleInterface extends JFrame {
 			GameManager.PlaySound(1);
 			dispose();
 		} else {
-			lblChangePokemon.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/" + player.getParty()[indice].getSpecie().getDexNumber() + ".png")));
+			lblChangePokemon.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + player.getParty()[indice].getSpecie().getDexNumber() + ".png")));
 		}
 	}
 }

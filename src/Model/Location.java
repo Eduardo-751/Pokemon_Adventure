@@ -16,35 +16,43 @@ public enum Location {
     FUCHSIA_CITY(true, true, null, "Fuchsia City", null, 0, 0),
     SAFFRON_CITY(true, true, null, "Saffron City", null, 0, 0),
     ROUTE_01(false, false, null, "Route 01", convertToMap(new int[]{50, 100}, new Species[]{Species.PIDGEY, Species.RATTATA}), 2, 5),
-    ROUTE_02(false, false, null, "Route 02", convertToMap(new int[]{15, 60, 100}, new Species[]{Species.CATERPIE, Species.PIDGEY, Species.RATTATA}), 2, 5),
-    ROUTE_03(false, false, null, "Route 03", convertToMap(new int[]{45, 90, 100}, new Species[]{Species.PIDGEY, Species.SPEAROW, Species.JIGGLYPUFF}), 5, 8),
-    ROUTE_04(false, false, null, "Route 04", convertToMap(new int[]{40, 75, 100}, new Species[]{Species.RATTATA, Species.SPEAROW, Species.EKANS}), 6, 12),
-    ROUTE_05(false, false, null, "Route 05", convertToMap(new int[]{40, 75, 100}, new Species[]{Species.PIDGEY, Species.ODDISH, Species.MANKEY}), 10, 16),
-    ROUTE_06(false, false, null, "Route 06", convertToMap(new int[]{40, 75, 100}, new Species[]{Species.PIDGEY, Species.ODDISH, Species.MANKEY}), 13, 16),
-    ROUTE_07(false, false, null, "Route 07", convertToMap(new int[]{30, 60, 90, 100}, new Species[]{Species.PIDGEY, Species.ODDISH, Species.MANKEY, Species.GROWLITHE}), 17, 20),
-    ROUTE_08(false, false, null, "Route 08", convertToMap(new int[]{35, 55, 80, 100}, new Species[]{Species.PIDGEY, Species.ODDISH, Species.MANKEY, Species.GROWLITHE}), 17, 20),
-    ROUTE_09(false, false, null, "Route 09", convertToMap(new int[]{40, 75, 25}, new Species[]{Species.RATTATA, Species.SPEAROW, Species.EKANS}), 13, 17),
-    ROUTE_10(false, false, null, "Route 10", convertToMap(new int[]{30, 55, 100}, new Species[]{Species.SPEAROW, Species.EKANS, Species.VOLTORB}), 13, 17),
-    ROUTE_11(false, false, null, "Route 11", convertToMap(new int[]{35, 75, 100}, new Species[]{Species.SPEAROW, Species.EKANS, Species.DROWZEE}), 11, 17),
-    ROUTE_12(false, false, null, "Route 12", convertToMap(new int[]{35, 75, 80, 100}, new Species[]{Species.PIDGEY, Species.ODDISH, Species.GLOOM, Species.VENONAT}), 22, 27),
-    ROUTE_13(false, false, null, "Route 13", convertToMap(new int[]{30, 70, 75, 95, 100}, new Species[]{Species.PIDGEY, Species.ODDISH, Species.GLOOM, Species.VENONAT, Species.DITTO}), 22, 27),
-    ROUTE_14(false, false, null, "Route 14", convertToMap(new int[]{15, 20, 60, 65, 85, 100}, new Species[]{Species.PIDGEY, Species.PIDGEOTTO, Species.ODDISH, Species.GLOOM, Species.VENONAT, Species.DITTO}), 24, 30),
-    ROUTE_15(false, false, null, "Route 15", convertToMap(new int[]{15, 20, 60, 65, 85, 100}, new Species[]{Species.PIDGEY, Species.PIDGEOTTO, Species.ODDISH, Species.GLOOM, Species.VENONAT, Species.DITTO}), 24, 30),
-    ROUTE_16(false, false, null, "Route 16", convertToMap(new int[]{30, 35, 75, 100}, new Species[]{Species.RATTATA, Species.RATICATE, Species.SPEAROW, Species.DODUO}), 18, 25),
-    ROUTE_17(false, false, null, "Route 17", convertToMap(new int[]{30, 70, 75, 100}, new Species[]{Species.RATICATE, Species.SPEAROW, Species.FEAROW, Species.DODUO}), 24, 28),
-    ROUTE_18(false, false, null, "Route 18", convertToMap(new int[]{20, 60, 75, 100}, new Species[]{Species.RATICATE, Species.SPEAROW, Species.FEAROW, Species.DODUO}), 24, 29),
+    ROUTE_02(false, false, null, "Route 02", convertToMap(new int[]{45, 90, 95, 100}, new Species[]{Species.PIDGEY, Species.RATTATA, Species.CATERPIE, Species.WEEDLE}), 2, 5),
+    ROUTE_03(false, false, null, "Route 03", convertToMap(new int[]{30, 60, 70, 80, 90, 100}, new Species[]{Species.PIDGEY, Species.SPEAROW, Species.NIDORAN_MALE, Species.NIDORAN_FEMALE, Species.JIGGLYPUFF, Species.MANKEY}), 5, 7),
+    ROUTE_04(false, false, null, "Route 04", convertToMap(new int[]{35, 70, 80, 90, 100}, new Species[]{Species.RATTATA, Species.SPEAROW, Species.EKANS, Species.SANDSHREW, Species.MANKEY}), 6, 12),
+    ROUTE_05(false, false, null, "Route 05", convertToMap(new int[]{35, 70, 85, 100}, new Species[]{Species.PIDGEY, Species.MEOWTH, Species.ODDISH, Species.BELLSPROUT}), 13, 16),
+    ROUTE_06(false, false, null, "Route 06", convertToMap(new int[]{35, 70, 85, 100}, new Species[]{Species.PIDGEY, Species.MEOWTH, Species.ODDISH, Species.BELLSPROUT}), 13, 16),
+    ROUTE_07(false, false, null, "Route 07", convertToMap(new int[]{35, 70, 80, 90, 95, 100}, new Species[]{Species.PIDGEY, Species.MEOWTH, Species.ODDISH, Species.BELLSPROUT, Species.GROWLITHE, Species.VULPIX}), 17, 20),
+    ROUTE_08(false, false, null, "Route 08", convertToMap(new int[]{30, 60, 70, 80, 90, 100}, new Species[]{Species.PIDGEY, Species.MEOWTH, Species.EKANS, Species.SANDSHREW, Species.GROWLITHE, Species.VULPIX}), 17, 20),
+    ROUTE_09(false, false, null, "Route 09", convertToMap(new int[]{35, 70, 85, 100}, new Species[]{Species.RATTATA, Species.SPEAROW, Species.EKANS, Species.SANDSHREW}), 13, 17),
+    ROUTE_10(false, false, null, "Route 10", convertToMap(new int[]{30, 45, 60, 100}, new Species[]{Species.SPEAROW, Species.EKANS, Species.SANDSHREW, Species.VOLTORB}), 13, 17),
+    ROUTE_11(false, false, null, "Route 11", convertToMap(new int[]{35, 55, 75, 100}, new Species[]{Species.SPEAROW, Species.EKANS, Species.SANDSHREW, Species.DROWZEE}), 11, 17),
+    ROUTE_12(false, false, null, "Route 12", convertToMap(new int[]{30, 45, 50, 80, 95, 100}, new Species[]{Species.PIDGEY, Species.ODDISH, Species.GLOOM, Species.VENONAT, Species.BELLSPROUT, Species.WEEPINBELL}), 22, 27),
+    ROUTE_13(false, false, null, "Route 13", convertToMap(new int[]{20, 25, 40, 45, 75, 90, 95, 100}, new Species[]{Species.PIDGEY, Species.PIDGEOTTO, Species.ODDISH, Species.GLOOM, Species.VENONAT, Species.BELLSPROUT, Species.WEEPINBELL, Species.DITTO}), 22, 27),
+    ROUTE_14(false, false, null, "Route 14", convertToMap(new int[]{10, 15, 30, 35, 65, 80, 85, 100}, new Species[]{Species.PIDGEY, Species.PIDGEOTTO, Species.ODDISH, Species.GLOOM, Species.VENONAT, Species.BELLSPROUT, Species.WEEPINBELL, Species.DITTO}), 24, 30),
+    ROUTE_15(false, false, null, "Route 15", convertToMap(new int[]{20, 25, 40, 45, 75, 90, 95, 100}, new Species[]{Species.PIDGEY, Species.PIDGEOTTO, Species.ODDISH, Species.GLOOM, Species.VENONAT, Species.BELLSPROUT, Species.WEEPINBELL, Species.DITTO}), 24, 30),
+    ROUTE_16(false, false, null, "Route 16", convertToMap(new int[]{30, 35, 65, 100}, new Species[]{Species.RATTATA, Species.RATICATE, Species.SPEAROW, Species.DODUO}), 18, 25),
+    ROUTE_17(false, false, null, "Route 17", convertToMap(new int[]{5, 30, 60, 65, 100}, new Species[]{Species.RATTATA, Species.RATICATE, Species.SPEAROW, Species.FEAROW, Species.DODUO}), 24, 28),
+    ROUTE_18(false, false, null, "Route 18", convertToMap(new int[]{5, 20, 50, 65, 100}, new Species[]{Species.RATTATA, Species.RATICATE, Species.SPEAROW, Species.FEAROW, Species.DODUO}), 24, 29),
     ROUTE_19(false, false, null, "Route 19", convertToMap(new int[]{100}, new Species[]{Species.TENTACOOL}), 5, 40),
     ROUTE_20(false, false, null, "Route 20", convertToMap(new int[]{100}, new Species[]{Species.TENTACOOL}), 5, 40),
-    ROUTE_21(false, false, Move.SURF, "Route 21", convertToMap(new int[]{12, 11, 12, 11, 4, 50}, new Species[]{Species.PIDGEY, Species.PIDGEOTTO, Species.RATTATA, Species.RATICATE, Species.TANGELA, Species.TENTACOOL}), 17, 28),
-    ROUTE_22(false, false, null, "Route 22", convertToMap(new int[]{45, 55, 60, 100}, new Species[]{Species.RATTATA, Species.SPEAROW, Species.NIDORAN_MALE, Species.NIDORAN_FEMALE}), 2, 5),
-    ROUTE_24(false, false, null, "Route 24", convertToMap(new int[]{20, 40, 60, 85, 100}, new Species[]{Species.WEEDLE, Species.KAKUNA, Species.PIDGEY, Species.ODDISH, Species.ABRA}), 7, 12),
-    ROUTE_25(false, false, null, "Route 25", convertToMap(new int[]{1, 5, 25, 45, 60, 85, 100}, new Species[]{Species.CATERPIE, Species.METAPOD, Species.WEEDLE, Species.KAKUNA, Species.PIDGEY, Species.ODDISH, Species.ABRA}), 8, 14),
+    ROUTE_21(false, false, null, "Route 21", convertToMap(new int[]{50, 100}, new Species[]{Species.TANGELA, Species.TENTACOOL}), 17, 28),
+    ROUTE_22(false, false, null, "Route 22", convertToMap(new int[]{45, 90, 100}, new Species[]{Species.RATTATA, Species.SPEAROW, Species.MANKEY}), 2, 5),
+    ROUTE_23(false, false, null, "Route 23", convertToMap(new int[]{15, 40, 50, 55, 65, 70, 95, 100}, new Species[]{Species.SPEAROW, Species.FEAROW, Species.EKANS, Species.ARBOK, Species.SANDSHREW, Species.SANDSLASH, Species.MANKEY, Species.PRIMEAPE}), 32, 38),
+    ROUTE_24(false, false, null, "Route 24", convertToMap(new int[]{10, 15, 25, 30, 45, 70, 95, 100}, new Species[]{Species.CATERPIE, Species.METAPOD, Species.WEEDLE, Species.KAKUNA, Species.PIDGEY, Species.ODDISH, Species.BELLSPROUT, Species.ABRA}), 7, 12),
+    ROUTE_25(false, false, null, "Route 25", convertToMap(new int[]{10, 15, 25, 30, 45, 65, 85, 100}, new Species[]{Species.CATERPIE, Species.METAPOD, Species.WEEDLE, Species.KAKUNA, Species.PIDGEY, Species.ODDISH, Species.BELLSPROUT, Species.ABRA}), 7, 14),
     VIRIDIAN_FOREST(false, false, null, "Viridian Forest", convertToMap(new int[]{5, 45, 50, 95, 100}, new Species[]{Species.CATERPIE, Species.KAKUNA, Species.METAPOD, Species.WEEDLE, Species.PIKACHU}), 3, 8),
-    KANTO_POWER_PLANT(false, false, null, "Kanto Power Plant", convertToMap(new int[]{25, 50, 60, 95, 100}, new Species[]{Species.PIKACHU, Species.MAGNEMITE, Species.MAGNETON, Species.VOLTORB, Species.ELECTABUZZ}), 22, 35),
-    ROCK_TUNNEL(false, false, null, "Rock Tunnel", convertToMap(new int[]{50, 65, 91, 100}, new Species[]{Species.ZUBAT, Species.GEODUDE, Species.MACHOP, Species.ONIX}), 13, 18),
-    MT_MOON_SQUARE(true, true, Move.DIG, "Mt Moon Square", null, 0, 0),
-    MT_MOON(false, false, null, "Mt Moon", convertToMap(new int[]{4, 64, 74, 100}, new Species[]{Species.CLEFAIRY, Species.ZUBAT, Species.PARAS, Species.GEODUDE}), 8, 12);
-
+    MT_MOON_SQUARE(true, true, null, "Mt Moon Square", null, 0, 0),
+    MT_MOON(false, false, null, "Mt Moon", convertToMap(new int[]{6, 55, 70, 100}, new Species[]{Species.CLEFAIRY, Species.ZUBAT, Species.PARAS, Species.GEODUDE}), 8, 12),
+    DIGLETTS_CAVE(false, false, null, "Diglett's Cave", convertToMap(new int[]{95, 100}, new Species[]{Species.DIGLETT, Species.DUGTRIO}), 15, 31),
+    ROCK_TUNNEL(false, false, null, "Rock Tunnel", convertToMap(new int[]{35, 65, 80, 90, 100}, new Species[]{Species.ZUBAT, Species.GEODUDE, Species.MACHOP, Species.MANKEY, Species.ONIX}), 13, 18),
+    SAFARI_ZONE_CENTER(false, false, null, "Safari Zone Center", convertToMap(new int[]{10, 15, 25, 30, 35, 50, 70, 90, 92, 96, 100}, new Species[]{Species.NIDORAN_MALE, Species.NIDORINO, Species.NIDORAN_FEMALE, Species.NIDORINA, Species.PARASECT, Species.VENONAT, Species.EXEGGCUTE, Species.RHYHORN, Species.CHANSEY, Species.SCYTHER, Species.PINSIR}), 23, 30),
+    SAFARI_ZONE_EAST(false, false, null, "Safari Zone East", convertToMap(new int[]{10, 15, 25, 30, 45, 50, 70, 90, 96, 98, 100}, new Species[]{Species.NIDORAN_MALE, Species.NIDORINO, Species.NIDORAN_FEMALE, Species.NIDORINA, Species.PARAS, Species.PARASECT, Species.DODUO, Species.EXEGGCUTE, Species.KANGASKHAN, Species.SCYTHER, Species.PINSIR}), 24, 33),
+    SAFARI_ZONE_NORTH(false, false, null, "Safari Zone North", convertToMap(new int[]{10, 20, 30, 40, 50, 55, 75, 95, 99, 100}, new Species[]{Species.NIDORAN_MALE, Species.NIDORINO, Species.NIDORAN_FEMALE, Species.NIDORINA, Species.PARAS, Species.VENOMOTH, Species.EXEGGCUTE, Species.RHYHORN, Species.CHANSEY, Species.TAUROS}), 24, 30),
+    SAFARI_ZONE_WEST(false, false, null, "Safari Zone West", convertToMap(new int[]{5, 15, 20, 30, 45, 50, 70, 90, 95, 100}, new Species[]{Species.NIDORAN_MALE, Species.NIDORINO, Species.NIDORAN_FEMALE, Species.NIDORINA, Species.VENONAT, Species.VENOMOTH, Species.DODUO, Species.EXEGGCUTE, Species.KANGASKHAN, Species.TAUROS}), 24, 30),
+    POWER_PLANT(false, false, null, "Power Plant", convertToMap(new int[]{25, 55, 65, 95, 100}, new Species[]{Species.PIKACHU, Species.MAGNEMITE, Species.MAGNETON, Species.VOLTORB, Species.ELECTABUZZ}), 22, 35),
+    SEAFOAM_ISLANDS(false, false, null, "Seafoam Islands", convertToMap(new int[]{40, 50, 60, 65, 70, 80, 95, 100}, new Species[]{Species.SEEL, Species.PSYDUCK, Species.SLOWPOKE, Species.GOLDUCK, Species.SLOWBRO, Species.ZUBAT, Species.GOLBAT, Species.DEWGONG}), 22, 35),
+	INDIGO_PLATEAU(true, true, null, "Indigo Plateau", null, 0, 0);
+	
     private final String Name;
     private final Map<Species, Integer> PokemonsLivingHere;
     private Location LocationToNorth;
@@ -96,9 +104,9 @@ public enum Location {
         Location.LAVENDER_TOWN.setLocationToNorth(Location.ROUTE_10);
         Location.LAVENDER_TOWN.setLocationToSouth(Location.ROUTE_12);
         Location.LAVENDER_TOWN.setLocationToWest(Location.ROUTE_08);
-        Location.LAVENDER_TOWN.setLocationToEast(Location.KANTO_POWER_PLANT);
         Location.CELADON_CITY.setLocationToWest(Location.ROUTE_16);
         Location.CELADON_CITY.setLocationToEast(Location.ROUTE_07);
+        Location.FUCHSIA_CITY.setLocationToNorth(Location.SAFARI_ZONE_CENTER);
         Location.FUCHSIA_CITY.setLocationToSouth(Location.ROUTE_19);
         Location.FUCHSIA_CITY.setLocationToWest(Location.ROUTE_18);
         Location.FUCHSIA_CITY.setLocationToEast(Location.ROUTE_15);
@@ -129,7 +137,7 @@ public enum Location {
         Location.ROUTE_09.setLocationToEast(Location.ROCK_TUNNEL);
         Location.ROUTE_10.setLocationToNorth(Location.ROCK_TUNNEL);
         Location.ROUTE_10.setLocationToSouth(Location.LAVENDER_TOWN);
-        Location.ROUTE_10.setLocationToWest(Location.KANTO_POWER_PLANT);
+        Location.ROUTE_10.setLocationToEast(Location.POWER_PLANT);
         Location.ROUTE_11.setLocationToWest(Location.VERMILION_CITY);
         Location.ROUTE_11.setLocationToEast(Location.ROUTE_12);
         Location.ROUTE_12.setLocationToNorth(Location.LAVENDER_TOWN);
@@ -148,24 +156,39 @@ public enum Location {
         Location.ROUTE_18.setLocationToNorth(Location.ROUTE_17);
         Location.ROUTE_18.setLocationToEast(Location.FUCHSIA_CITY);
         Location.ROUTE_19.setLocationToNorth(Location.FUCHSIA_CITY);
-        Location.ROUTE_19.setLocationToSouth(Location.ROUTE_20);
-        Location.ROUTE_20.setLocationToNorth(Location.ROUTE_19);
+        Location.ROUTE_19.setLocationToWest(Location.ROUTE_20);
+        Location.ROUTE_20.setLocationToNorth(Location.SEAFOAM_ISLANDS);
+        Location.ROUTE_20.setLocationToEast(Location.ROUTE_19);
         Location.ROUTE_20.setLocationToWest(Location.CINNABAR_ISLAND);
         Location.ROUTE_21.setLocationToNorth(Location.PALLET_TOWN);
         Location.ROUTE_21.setLocationToSouth(Location.CINNABAR_ISLAND);
+        Location.ROUTE_22.setLocationToNorth(Location.ROUTE_23);
         Location.ROUTE_22.setLocationToEast(Location.VIRIDIAN_CITY);
-        Location.ROUTE_24.setLocationToNorth(Location.ROUTE_25);
+        Location.ROUTE_23.setLocationToNorth(Location.INDIGO_PLATEAU);
+        Location.ROUTE_23.setLocationToSouth(Location.ROUTE_22);
         Location.ROUTE_24.setLocationToSouth(Location.CERULEAN_CITY);
-        Location.ROUTE_25.setLocationToSouth(Location.ROUTE_24);
+        Location.ROUTE_24.setLocationToEast(Location.ROUTE_25);
+        Location.ROUTE_25.setLocationToWest(Location.ROUTE_24);
         Location.MT_MOON_SQUARE.setLocationToWest(Location.ROUTE_03);
         Location.MT_MOON_SQUARE.setLocationToEast(Location.MT_MOON);
         Location.MT_MOON.setLocationToWest(Location.MT_MOON_SQUARE);
         Location.MT_MOON.setLocationToEast(Location.ROUTE_04);
         Location.VIRIDIAN_FOREST.setLocationToNorth(Location.PEWTER_CITY);
         Location.VIRIDIAN_FOREST.setLocationToSouth(Location.ROUTE_02);
+        Location.DIGLETTS_CAVE.setLocationToWest(Location.ROUTE_02);
+        Location.DIGLETTS_CAVE.setLocationToSouth(Location.ROUTE_11);
         Location.ROCK_TUNNEL.setLocationToSouth(Location.ROUTE_10);
         Location.ROCK_TUNNEL.setLocationToWest(Location.ROUTE_09);
-        Location.KANTO_POWER_PLANT.setLocationToWest(Location.LAVENDER_TOWN);
+        Location.SAFARI_ZONE_CENTER.setLocationToNorth(Location.SAFARI_ZONE_NORTH);
+        Location.SAFARI_ZONE_CENTER.setLocationToSouth(Location.FUCHSIA_CITY);
+        Location.SAFARI_ZONE_CENTER.setLocationToWest(Location.SAFARI_ZONE_WEST);
+        Location.SAFARI_ZONE_CENTER.setLocationToEast(Location.SAFARI_ZONE_EAST);
+        Location.SAFARI_ZONE_NORTH.setLocationToSouth(Location.SAFARI_ZONE_CENTER);
+        Location.SAFARI_ZONE_EAST.setLocationToWest(Location.SAFARI_ZONE_CENTER);
+        Location.SAFARI_ZONE_WEST.setLocationToEast(Location.SAFARI_ZONE_CENTER);
+        Location.POWER_PLANT.setLocationToWest(Location.ROUTE_10);
+        Location.SEAFOAM_ISLANDS.setLocationToSouth(Location.ROUTE_20);
+        Location.INDIGO_PLATEAU.setLocationToSouth(Location.ROUTE_23);
     }
 
     /**

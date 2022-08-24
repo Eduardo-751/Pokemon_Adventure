@@ -36,7 +36,7 @@ public class BattleManager {
 	/**
 	 * Process the Move used by the Player
 	 */
-	public void UseMove(Move move) throws InterruptedException {
+	public void UseMove(Move move) {
 		if (move.getCurrentPP() > 0) {
 			Move opponentMove = opponentPokemon.getMoveSet()[(byte) (Math.random() * opponentPokemon.getMoveSet().length)];
 			if (playerPokemon.getInBattleStat(Stat.SPEED) >= opponentPokemon.getInBattleStat(Stat.SPEED)) {
@@ -66,7 +66,7 @@ public class BattleManager {
 				ProcessDeath(first);
 			}
 		} else {
-			BattleUi.txtLog.setText(BattleUi.txtLog.getText() + second.getName() + " Miss\n");
+			BattleUi.txtLog.setText(BattleUi.txtLog.getText() + second.getName() + " Miss" + str + "\n");
 		}
 		BattleUi.RefreshUI(playerPokemon, opponentPokemon);
 	}
@@ -100,10 +100,10 @@ public class BattleManager {
 					Damage = CalculateDamage(pokemon, move, target);
 					//target.takeDamage(Damage);
 				}
-				BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Used  " + move.getName() + "!\nDid " + Damage + " Damage" + str + "\n\n");
+				BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Used  " + move.getName() + "!\nDid " + Damage + " Damage!\n" + str + "\n");
 			}
 		} else {
-			BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Miss\n");
+			BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Miss" + str + "\n");
 		}
 		return Damage;
 	}
@@ -129,6 +129,9 @@ public class BattleManager {
 				* ModifiersStab(pokemon, move, target)) / 255);
 	}
 
+	/**
+	 * Calculate the Stab, Crit and Type Effectiveness
+	 */
 	private float ModifiersStab(Pokemon pokemon, Move move, Pokemon target) {
 		float stab = 1, typeEffectiveness = 1, crit = 1;
 		for (Type t : pokemon.getType()) {
@@ -137,10 +140,10 @@ public class BattleManager {
 		}
 		for (Type t : target.getType()) {
 			if (move.getType().SuperEffective(t)) {
-				str = move.getName() + " is Super Effective against " + target.getName();
+				str = move.getName() + " is Super Effective against " + target.getName() + "\n";
 				typeEffectiveness *= 2;
 			} else if (move.getType().NotVeryEffective(t)) {
-				str = move.getName() + " is Not Very Effective against " + target.getName();
+				str = move.getName() + " is Not Very Effective against " + target.getName() + "\n";
 				typeEffectiveness *= .5;
 			} else if (move.getType().NoEffect(t))
 				typeEffectiveness *= 0;
@@ -151,7 +154,9 @@ public class BattleManager {
 		}
 		return (float) (stab * typeEffectiveness * crit * (((int) (new Random().nextInt((255 - 217) + 1) + 217))));
 	}
-
+	/**
+	*Aply Debuff
+	*/
 	public static boolean applyStatus(Move move, final Pokemon pokemon) {
 		final Status s = move.getStatusEffect();
 		for (int i = 0; i < pokemon.getStatus().length; i++) {
@@ -167,7 +172,10 @@ public class BattleManager {
 	 * Process the Death of the Pokemon that Took Damage
 	 */
 	private void ProcessDeath(Pokemon poke) {
+		BattleUi.RefreshUI(playerPokemon, opponentPokemon);
 		if (poke == opponentPokemon) {
+			int aux = calcExp(poke);
+			JOptionPane.showMessageDialog(null, getPokemon().getName() + " gained " + aux + "!");
 			GameManager.StopSound();
 			GameManager.PlaySound(1);
 			BattleUi.dispose();

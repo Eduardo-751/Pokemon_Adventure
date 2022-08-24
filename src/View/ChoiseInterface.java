@@ -70,7 +70,7 @@ public class ChoiseInterface extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/001.png")));
+                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Icon/001.png")));
                 lblBulbassauro.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Open.png")));
                 lblSquirtle.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
                 lblCharmander.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
@@ -90,7 +90,7 @@ public class ChoiseInterface extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/004.png")));
+                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Icon/004.png")));
                 lblCharmander.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Open.png")));
                 lblBulbassauro.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
                 lblSquirtle.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
@@ -109,7 +109,7 @@ public class ChoiseInterface extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/007.png")));
+                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Icon/007.png")));
                 lblSquirtle.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Open.png")));
                 lblBulbassauro.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
                 lblCharmander.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
