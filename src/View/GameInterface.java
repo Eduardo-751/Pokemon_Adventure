@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JProgressBar;
 import java.awt.Color;
 
@@ -32,42 +33,34 @@ public final class GameInterface extends JFrame {
 	private static final long serialVersionUID = 1L;
     private final Player player;
     private final MapInterface MapUi;
-    private final JPanel contentPane;
-    private final Container[] container = new Container[6];
-    private final JTabbedPane tabbedPane;
-    private final JLabel[] lblName = new JLabel[6],
-            lblHP = new JLabel[6],
-            lblAttack = new JLabel[6],
-            lblDefense = new JLabel[6],
-            lblSpAttack = new JLabel[6],
-            lblSpDefense = new JLabel[6],
-            lblSpeed = new JLabel[6],
-            lblImg = new JLabel[6];
-    private final JProgressBar[] xpBar = new JProgressBar[6];
-
+    private final JPanel contentPane, panelMenu;
+    private JTabbedPane tabbedPane;
+	private Container containerInfo, containerStatus, containerMove;
+	private JLabel lblName;
+	private JLabel lblLvl;
+	private JLabel lblHP;
+	private JLabel lblAttack;
+	private JLabel lblDefense;
+	private JLabel lblSpAttack;
+	private JLabel lblSpDefense;
+	private JLabel lblSpeed;
+	private JLabel lblImg;
+    private JProgressBar xpBar;
     /**
      * Create the frame.
-     *
-     * @param p the Player Create by the GameManager
      */
     public GameInterface(Player p) {
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowActivated(WindowEvent e) {
-                int i = 0;
-                for (Pokemon p : player.getParty()) {
-                    if (p != null && container[i] == null) {
-                        CreateContainer(p, i);
-                    } else if (p != null) {
-                        player.CheckLvlUp(p);
-                        RefreshContainer(player.getParty()[i], i);
-                    }
-                    i++;
-                }
-            }
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowActivated(WindowEvent e) {
+				if(player.getParty().length > tabbedPane.getTabCount())
+					CreateTabbedPane(tabbedPane.getTabCount());
+				RefreshContainerStatus(player.getParty()[tabbedPane.getSelectedIndex()]);
+			}
         });
-
+        
         player = p;
+        player.getCurrentLocation().CreateGridMap();
         MapUi = new MapInterface(player);
         MapUi.setVisible(true);
         
@@ -79,6 +72,21 @@ public final class GameInterface extends JFrame {
         contentPane.setLayout(null);
         setContentPane(contentPane);
 
+        panelMenu = new JPanel();
+        panelMenu.setBounds(10, 213, 605, 497);
+		contentPane.add(panelMenu);
+		panelMenu.setLayout(null);
+		
+    	if(containerStatus == null) {
+    		containerStatus = new Container();
+    		containerStatus.setBounds(0, 28, 605, 469);
+    		panelMenu.add(containerStatus);
+    	}
+    	
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(0, 0, 605, 497);
+        panelMenu.add(tabbedPane);
+        
         JLabel lblAsh = new JLabel("");
         lblAsh.setHorizontalAlignment(SwingConstants.CENTER);
         lblAsh.setVerticalTextPosition(SwingConstants.TOP);
@@ -87,16 +95,7 @@ public final class GameInterface extends JFrame {
         lblAsh.setBounds(624, 0, 360, 721);
         contentPane.add(lblAsh);
 
-        JPanel panelPokemon = new JPanel();
-        panelPokemon.setBounds(10, 213, 605, 497);
-        contentPane.add(panelPokemon);
-
-        panelPokemon.setLayout(null);
-        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        tabbedPane.setBounds(0, 0, 605, 497);
-        panelPokemon.add(tabbedPane);
-
-        //Button to open the Map Frame
+        //Button to open the Shop Frame
         JButton btnStore = new JButton("Store");
         btnStore.addActionListener((ActionEvent e) -> {
             
@@ -111,7 +110,7 @@ public final class GameInterface extends JFrame {
             if (player.getParty()[tabbedPane.getSelectedIndex()].isFainted()) {
                 JOptionPane.showMessageDialog(null, "Your Pokemon " + player.getParty()[tabbedPane.getSelectedIndex()].getName() + "is Dead!");
             } else if (player.getCurrentLocation().PokemonsLivingHere()) {
-                new BattleManager(player, player.CreateWildPokemon() , tabbedPane.getSelectedIndex());
+                new BattleManager(player, player.getParty()[tabbedPane.getSelectedIndex()], player.CreateWildPokemon(), this);
                 GameManager.StopSound();
                 GameManager.PlaySound(2);
             } else {
@@ -132,7 +131,7 @@ public final class GameInterface extends JFrame {
                             move.resetPP();
                         }
                     }
-                    RefreshContainer(player.getParty()[i], i);
+                    RefreshContainerStatus(player.getParty()[tabbedPane.getSelectedIndex()]);
                 }
                 JOptionPane.showMessageDialog(null, "Healing Finish");
             } else {
@@ -142,94 +141,211 @@ public final class GameInterface extends JFrame {
         btnHeal.setBounds(10, 143, 272, 55);
         contentPane.add(btnHeal);
 
-        for (int i = 0; i < player.getParty().length; i++) {
-            CreateContainer(player.getParty()[i], i);
-        }
-
         JLabel lblBackground = new JLabel("");
         lblBackground.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/menu_background.png")));
         lblBackground.setBounds(0, 0, 1000, 720);
         contentPane.add(lblBackground);
     }
 
-    /**
-     * Create the Container.
-     *
-     * @param poke The Pokemon Choose by the Player
-     * @param indice The of the Tabbed Panel
+	/**
+     * Create the Tabbed Pane.
      */
-    public void CreateContainer(Pokemon poke, int indice) {
-        try {
-            container[indice] = new Container();
-            tabbedPane.addTab("Pokemon - " + (indice + 1), null, container[indice], null);
-
-            lblName[indice] = new JLabel();
-            lblName[indice].setFont(new Font("Tahoma", Font.BOLD, 35));
-            lblName[indice].setBounds(10, 11, 500, 58);
-            container[indice].add(lblName[indice]);
-
-            lblHP[indice] = new JLabel();
-            lblHP[indice].setFont(new Font("Tahoma", Font.PLAIN, 22));
-            lblHP[indice].setBounds(10, 156, 158, 33);
-            container[indice].add(lblHP[indice]);
-
-            lblAttack[indice] = new JLabel();
-            lblAttack[indice].setFont(new Font("Tahoma", Font.PLAIN, 22));
-            lblAttack[indice].setBounds(10, 200, 158, 33);
-            container[indice].add(lblAttack[indice]);
-
-            lblDefense[indice] = new JLabel();
-            lblDefense[indice].setFont(new Font("Tahoma", Font.PLAIN, 22));
-            lblDefense[indice].setBounds(10, 244, 158, 33);
-            container[indice].add(lblDefense[indice]);
-
-            lblSpAttack[indice] = new JLabel();
-            lblSpAttack[indice].setFont(new Font("Tahoma", Font.PLAIN, 22));
-            lblSpAttack[indice].setBounds(10, 288, 158, 33);
-            container[indice].add(lblSpAttack[indice]);
-
-            lblSpDefense[indice] = new JLabel();
-            lblSpDefense[indice].setFont(new Font("Tahoma", Font.PLAIN, 22));
-            lblSpDefense[indice].setBounds(10, 332, 158, 33);
-            container[indice].add(lblSpDefense[indice]);
-
-            lblSpeed[indice] = new JLabel();
-            lblSpeed[indice].setFont(new Font("Tahoma", Font.PLAIN, 22));
-            lblSpeed[indice].setBounds(10, 376, 158, 33);
-            container[indice].add(lblSpeed[indice]);
-
-            xpBar[indice] = new JProgressBar();
-            xpBar[indice].setStringPainted(true);
-            xpBar[indice].setForeground(Color.GREEN);
-            xpBar[indice].setBounds(10, 444, 580, 14);
-            container[indice].add(xpBar[indice]);
-
-            lblImg[indice] = new JLabel("");
-            lblImg[indice].setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
-            lblImg[indice].setBounds(326, 190, 238, 238);
-            container[indice].add(lblImg[indice]);
-
-            RefreshContainer(poke, indice);
-        } catch (Exception e) {
-        }
+    public void CreateTabbedPane(int indice) {
+    	
+		tabbedPane.addTab("Pokemon - " + (indice + 1), null);
+		tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
+		    public void stateChanged(javax.swing.event.ChangeEvent evt) {
+		    	RefreshContainerInfo(player.getParty()[tabbedPane.getSelectedIndex()]);
+		    	RefreshContainerStatus(player.getParty()[tabbedPane.getSelectedIndex()]);
+		    	RefreshContainerMove(player.getParty()[tabbedPane.getSelectedIndex()]);
+		    }
+		});
+		RefreshContainerStatus(player.getParty()[tabbedPane.getSelectedIndex()]);
     }
-
+    
     /**
-     * Update the Container.
-     *
-     * @param poke The Pokemon Choose by the Player
-     * @param indice The of the Tabbed Panel
+     * Update the Container Status.
      */
-    public void RefreshContainer(Pokemon poke, int indice) {
-        lblName[indice].setText(poke.getName() + " Lvl: " + poke.getLevel());
-        lblHP[indice].setText("Hp: " + poke.getInBattleStat(Stat.HP));
-        lblAttack[indice].setText("Attack: " + poke.getCurrentStat(Stat.ATTACK));
-        lblDefense[indice].setText("Defense: " + poke.getCurrentStat(Stat.DEFENSE));
-        lblSpAttack[indice].setText("Sp. Attack: " + poke.getCurrentStat(Stat.SP_ATTACK));
-        lblSpDefense[indice].setText("Sp. Defense: " + poke.getCurrentStat(Stat.SP_DEFENSE));
-        lblSpeed[indice].setText("Speed: " + poke.getCurrentStat(Stat.SPEED));
-        xpBar[indice].setMaximum(poke.getExpToNextLvl() - poke.getSpecie().calculateExp(poke.getLevel()));
-        xpBar[indice].setValue(poke.getExp() - poke.getSpecie().calculateExp(poke.getLevel()));
-        lblImg[indice].setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
+    public void RefreshContainerInfo(Pokemon poke) {
+    	containerInfo.removeAll();
+    	CreateLabelStatus();
+        lblName.setText(poke.getName());
+        lblLvl.setText(String.valueOf(poke.getLevel()));
+        lblHP.setText(String.valueOf(poke.getInBattleStat(Stat.HP)));
+        lblAttack.setText(String.valueOf(poke.getCurrentStat(Stat.ATTACK)));
+        lblDefense.setText(String.valueOf(poke.getCurrentStat(Stat.DEFENSE)));
+        lblSpAttack.setText(String.valueOf(poke.getCurrentStat(Stat.SP_ATTACK)));
+        lblSpDefense.setText(String.valueOf(poke.getCurrentStat(Stat.SP_DEFENSE)));
+        lblSpeed.setText(String.valueOf(poke.getCurrentStat(Stat.SPEED)));
+        xpBar.setMaximum(poke.getExpToNextLvl() - poke.getSpecie().calculateExp(poke.getLevel()));
+        xpBar.setValue(poke.getExp() - poke.getSpecie().calculateExp(poke.getLevel()));
+        lblImg.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
+    }
+    
+    /**
+     * Update the Labels of the Info Container.
+     */
+    public void CreateLabelInfo() {
+    	lblName = new JLabel();
+		lblName.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblName.setBounds(10, 77, 212, 33);
+		containerInfo.add(lblName);
+
+		lblLvl = new JLabel();
+		lblLvl.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblLvl.setHorizontalAlignment(SwingConstants.LEFT);
+		lblLvl.setBounds(59, 116, 52, 33);
+		containerInfo.add(lblLvl);
+
+		xpBar = new JProgressBar();
+		xpBar.setStringPainted(true);
+		xpBar.setForeground(Color.GREEN);
+		xpBar.setBounds(263, 434, 327, 24);
+		containerInfo.add(xpBar);
+
+		lblImg = new JLabel("");
+		lblImg.setBounds(41, 157, 184, 184);
+		containerInfo.add(lblImg);
+
+		JLabel StatusBackground = new JLabel("");
+		StatusBackground.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Pokegear/bg_1.png")));
+		StatusBackground.setBounds(0, 0, 600, 469);
+		containerInfo.add(StatusBackground);
+    }
+    
+    /**
+     * Update the Container Status.
+     */
+    public void RefreshContainerStatus(Pokemon poke) {
+    	containerStatus.removeAll();
+    	CreateLabelStatus();
+        lblName.setText(poke.getName());
+        lblLvl.setText(String.valueOf(poke.getLevel()));
+        lblHP.setText(String.valueOf(poke.getInBattleStat(Stat.HP)));
+        lblAttack.setText(String.valueOf(poke.getCurrentStat(Stat.ATTACK)));
+        lblDefense.setText(String.valueOf(poke.getCurrentStat(Stat.DEFENSE)));
+        lblSpAttack.setText(String.valueOf(poke.getCurrentStat(Stat.SP_ATTACK)));
+        lblSpDefense.setText(String.valueOf(poke.getCurrentStat(Stat.SP_DEFENSE)));
+        lblSpeed.setText(String.valueOf(poke.getCurrentStat(Stat.SPEED)));
+        xpBar.setMaximum(poke.getExpToNextLvl() - poke.getSpecie().calculateExp(poke.getLevel()));
+        xpBar.setValue(poke.getExp() - poke.getSpecie().calculateExp(poke.getLevel()));
+        lblImg.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
+    }
+    
+    /**
+     * Update the Labels of the Status Container.
+     */
+    public void CreateLabelStatus() {
+    	lblName = new JLabel();
+		lblName.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblName.setBounds(10, 77, 212, 33);
+		containerStatus.add(lblName);
+
+		lblLvl = new JLabel();
+		lblLvl.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblLvl.setHorizontalAlignment(SwingConstants.LEFT);
+		lblLvl.setBounds(59, 116, 52, 33);
+		containerStatus.add(lblLvl);
+
+		lblHP = new JLabel();
+		lblHP.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblHP.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblHP.setBounds(451, 93, 113, 33);
+		containerStatus.add(lblHP);
+
+		lblAttack = new JLabel();
+		lblAttack.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblAttack.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblAttack.setBounds(451, 148, 113, 33);
+		containerStatus.add(lblAttack);
+
+		lblDefense = new JLabel();
+		lblDefense.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblDefense.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblDefense.setBounds(451, 188, 113, 33);
+		containerStatus.add(lblDefense);
+
+		lblSpAttack = new JLabel();
+		lblSpAttack.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblSpAttack.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSpAttack.setBounds(451, 227, 113, 33);
+		containerStatus.add(lblSpAttack);
+
+		lblSpDefense = new JLabel();
+		lblSpDefense.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblSpDefense.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSpDefense.setBounds(451, 266, 113, 33);
+		containerStatus.add(lblSpDefense);
+
+		lblSpeed = new JLabel();
+		lblSpeed.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblSpeed.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSpeed.setBounds(451, 305, 113, 33);
+		containerStatus.add(lblSpeed);
+
+		xpBar = new JProgressBar();
+		xpBar.setStringPainted(true);
+		xpBar.setForeground(Color.GREEN);
+		xpBar.setBounds(263, 434, 327, 24);
+		containerStatus.add(xpBar);
+
+		lblImg = new JLabel("");
+		lblImg.setBounds(41, 157, 184, 184);
+		containerStatus.add(lblImg);
+
+		JLabel StatusBackground = new JLabel("");
+		StatusBackground.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Pokegear/bg_3.png")));
+		StatusBackground.setBounds(0, 0, 600, 469);
+		containerStatus.add(StatusBackground);
+    }
+    
+    /**
+     * Update the Container Status.
+     */
+    public void RefreshContainerMove(Pokemon poke) {
+    	containerMove.removeAll();
+    	CreateLabelStatus();
+        lblName.setText(poke.getName());
+        lblLvl.setText(String.valueOf(poke.getLevel()));
+        lblHP.setText(String.valueOf(poke.getInBattleStat(Stat.HP)));
+        lblAttack.setText(String.valueOf(poke.getCurrentStat(Stat.ATTACK)));
+        lblDefense.setText(String.valueOf(poke.getCurrentStat(Stat.DEFENSE)));
+        lblSpAttack.setText(String.valueOf(poke.getCurrentStat(Stat.SP_ATTACK)));
+        lblSpDefense.setText(String.valueOf(poke.getCurrentStat(Stat.SP_DEFENSE)));
+        lblSpeed.setText(String.valueOf(poke.getCurrentStat(Stat.SPEED)));
+        xpBar.setMaximum(poke.getExpToNextLvl() - poke.getSpecie().calculateExp(poke.getLevel()));
+        xpBar.setValue(poke.getExp() - poke.getSpecie().calculateExp(poke.getLevel()));
+        lblImg.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
+    }
+    
+    /**
+     * Update the Labels of the Info Container.
+     */
+    public void CreateLabelMove() {
+    	lblName = new JLabel();
+		lblName.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		lblName.setBounds(10, 77, 212, 33);
+		containerMove.add(lblName);
+
+		lblLvl = new JLabel();
+		lblLvl.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblLvl.setHorizontalAlignment(SwingConstants.LEFT);
+		lblLvl.setBounds(59, 116, 52, 33);
+		containerMove.add(lblLvl);
+
+		xpBar = new JProgressBar();
+		xpBar.setStringPainted(true);
+		xpBar.setForeground(Color.GREEN);
+		xpBar.setBounds(263, 434, 327, 24);
+		containerMove.add(xpBar);
+
+		lblImg = new JLabel("");
+		lblImg.setBounds(41, 157, 184, 184);
+		containerMove.add(lblImg);
+
+		JLabel StatusBackground = new JLabel("");
+		StatusBackground.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Pokegear/bg_4.png")));
+		StatusBackground.setBounds(0, 0, 600, 469);
+		containerStatus.add(containerMove);
     }
 }

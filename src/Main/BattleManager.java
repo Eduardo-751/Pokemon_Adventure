@@ -6,13 +6,16 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 import View.BattleInterface;
+import View.GameInterface;
 
 public class BattleManager {
 
 	private final BattleInterface BattleUi;
+	private final GameInterface GameUI;
 	private final Player player;
-	private final Pokemon opponentPokemon;
+	private Pokemon opponentPokemon;
 	private Pokemon playerPokemon;
+	private Pokemon[] party;
 	public int Indice;
 	String str;
 
@@ -23,30 +26,32 @@ public class BattleManager {
 	 * @param opponent   = A Randon Enemy Chosse in the Pokemons in the Area
 	 * @param indicePoke = Indice of the Pokemon Player
 	 */
-	public BattleManager(Player p, Pokemon opponent, int indicePoke) {
+	public BattleManager(Player p, Pokemon pokemon, Pokemon opponent, GameInterface gi) {
 		player = p;
+		playerPokemon = pokemon;
 		opponentPokemon = opponent;
-		playerPokemon = player.getParty()[indicePoke];
-		Indice = indicePoke;
+		party = p.getParty();
 		BattleUi = new BattleInterface(this);
 		BattleUi.setVisible(true);
-		BattleUi.CreateUI(playerPokemon, opponentPokemon);
+		GameUI = gi;
 	}
 
 	/**
 	 * Process the Move used by the Player
 	 */
 	public void UseMove(Move move) {
+		Move opponentMove;
 		if (move.getCurrentPP() > 0) {
-			Move opponentMove = opponentPokemon.getMoveSet()[(byte) (Math.random() * opponentPokemon.getMoveSet().length)];
-			if (playerPokemon.getInBattleStat(Stat.SPEED) >= opponentPokemon.getInBattleStat(Stat.SPEED)) {
+			if(opponentPokemon.getMoveSet().length == 1)
+				opponentMove = opponentPokemon.getMoveSet()[0];
+			else
+				opponentMove = opponentPokemon.getMoveSet()[(byte) (Math.random() * opponentPokemon.getMoveSet().length)];
+			if (playerPokemon.getInBattleStat(Stat.SPEED) >= opponentPokemon.getInBattleStat(Stat.SPEED))
 				ProcessMoveInOrder(playerPokemon, move, opponentPokemon, opponentMove);
-			} else {
+			else
 				ProcessMoveInOrder(opponentPokemon, opponentMove, playerPokemon, move);
-			}
-		} else {
+		} else
 			JOptionPane.showMessageDialog(null, move.getName() + "Dont have Power Point!");
-		}
 	}
 
 	/**
@@ -89,16 +94,12 @@ public class BattleManager {
 			else {
 				if (move.equals(Move.NIGHT_SHADE) || move.equals(Move.SEISMIC_TOSS)) {
 					Damage = target.getLevel();
-					//target.takeDamage(Damage);
 				} else if (move.equals(Move.PSYWAVE)) {
 					Damage = (int) (Math.random() * (target.getLevel() * 1.5));
-					//target.takeDamage(Damage);
 				} else if (move.equals(Move.SUPER_FANG)) {
 					Damage = (int) (target.getInBattleHp() * 0.5);
-					//target.takeDamage(Damage);
 				} else {
 					Damage = CalculateDamage(pokemon, move, target);
-					//target.takeDamage(Damage);
 				}
 				BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Used  " + move.getName() + "!\nDid " + Damage + " Damage!\n" + str + "\n");
 			}
@@ -198,19 +199,25 @@ public class BattleManager {
 	 * Gets and Sets
 	 *
 	 */
+	public Player getPlayer() {
+		return player;
+	}
 	public Pokemon getPokemon() {
 		return playerPokemon;
 	}
-
 	public void setPokemon(Pokemon pokemon) {
 		playerPokemon = pokemon;
 	}
-
 	public Pokemon getOpponent() {
 		return opponentPokemon;
 	}
-
-	public Player getPlayer() {
-		return player;
+	public void setOpponent(Pokemon pokemon) {
+		opponentPokemon = pokemon;
+	}
+	public Pokemon[] getParty() {
+		return party;
+	}
+	public GameInterface getGameInterface() {
+		return GameUI;
 	}
 }

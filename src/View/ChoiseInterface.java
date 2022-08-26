@@ -21,6 +21,7 @@ public class ChoiseInterface extends JFrame {
 	private static final long serialVersionUID = 1L;
     private final JPanel contentPane;
     private Player player;
+    private JLabel[] starter = new JLabel[3];
 
     /**
      * Create the frame.
@@ -42,77 +43,65 @@ public class ChoiseInterface extends JFrame {
         JLabel lblStarter = new JLabel("");
         lblStarter.setBounds(285, 55, 238, 238);
         contentPane.add(lblStarter);
+        
+        starter[0] = new JLabel();
+        starter[0].setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+        starter[0].setBounds(157, 235, 149, 152);
+        contentPane.add(starter[0]);
+        
+        starter[1] = new JLabel();
+        starter[1].setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+        starter[1].setBounds(338, 304, 149, 152);
+        contentPane.add(starter[1]);
 
-        JLabel lblBulbassauro = new JLabel("");
-        lblBulbassauro.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
-        lblBulbassauro.setBounds(157, 235, 149, 152);
-        contentPane.add(lblBulbassauro);
+        starter[2] = new JLabel();
+        starter[2].setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+        starter[2].setBounds(513, 235, 149, 152);
+        contentPane.add(starter[2]);
 
-        JLabel lblCharmander = new JLabel("");
-        lblCharmander.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
-        lblCharmander.setBounds(338, 304, 149, 152);
-        contentPane.add(lblCharmander);
-
-        JLabel lblSquirtle = new JLabel("");
-        lblSquirtle.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
-        lblSquirtle.setBounds(513, 235, 149, 152);
-        contentPane.add(lblSquirtle);
-
-        lblBulbassauro.addMouseListener(new MouseAdapter() {
+        starter[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int dialogResult = JOptionPane.showConfirmDialog(null, "You Choose Bulbasaur", "Confirm", JOptionPane.YES_NO_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
-                    player.addToParty(new Pokemon(Species.valueOf("BULBASAUR"), 5));
-                    ChangeToGame();
+                    ChangeToGame(Species.BULBASAUR);
                 }
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
                 lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Icon/001.png")));
-                lblBulbassauro.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Open.png")));
-                lblSquirtle.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
-                lblCharmander.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+                RefreshUI(starter[0]);
             }
         });
 
-        lblCharmander.addMouseListener(new MouseAdapter() {
+        starter[1].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
                 int dialogResult = JOptionPane.showConfirmDialog(null, "You Choose Charmander", "Confirm", JOptionPane.YES_NO_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
-                    player.addToParty(new Pokemon(Species.valueOf("CHARMANDER"), 5));
-                    ChangeToGame();
+                    ChangeToGame(Species.CHARMANDER);
                 }
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
                 lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Icon/004.png")));
-                lblCharmander.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Open.png")));
-                lblBulbassauro.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
-                lblSquirtle.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+                RefreshUI(starter[1]);
             }
         });
 
-        lblSquirtle.addMouseListener(new MouseAdapter() {
+        starter[2].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int dialogResult = JOptionPane.showConfirmDialog(null, "You Choose Squirtle", "Confirm", JOptionPane.YES_NO_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
-                    player.addToParty(new Pokemon(Species.valueOf("SQUIRTLE"), 5));
-                    ChangeToGame();
+                    ChangeToGame(Species.SQUIRTLE);
                 }
             }
-
             @Override
             public void mouseEntered(MouseEvent e) {
                 lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Icon/007.png")));
-                lblSquirtle.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Open.png")));
-                lblBulbassauro.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
-                lblCharmander.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+                RefreshUI(starter[2]);
             }
         });
 
@@ -122,11 +111,21 @@ public class ChoiseInterface extends JFrame {
         contentPane.add(lblChossePokemon);
     }
 
-    public void ChangeToGame() {
+    public void ChangeToGame(Species species) {
+    	player.addToParty(new Pokemon(species, 5));
         GameManager.StopSound();
         GameManager.PlaySound(1);
         GameInterface frame = new GameInterface(player);
         frame.setVisible(true);
         dispose();
+    }
+    
+    public void RefreshUI(JLabel selected) {
+    	for(JLabel s : starter) {
+    		if(s == selected)
+    			s.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Open.png")));
+    		else
+    			s.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+    	}
     }
 }

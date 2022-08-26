@@ -16,7 +16,7 @@ public enum Species {
     WARTORTLE("Wartortle", "008", convertToMap(new int[] {36}, new Species[] {Species.BLASTOISE}), 45, new short[] {59, 63, 80, 65, 80, 58}, 142, convertToMap(new int[] {1, 1, 1, 8, 15, 24, 31, 39, 47}, new Move[] {Move.TACKLE, Move.TAIL_WHIP, Move.BUBBLE, Move.BUBBLE, Move.WATER_GUN, Move.BITE, Move.WITHDRAW, Move.SKULL_BASH, Move.HYDRO_PUMP}), Type.WATER),
     SQUIRTLE("Squirtle", "007", convertToMap(new int[] {16}, new Species[] {Species.WARTORTLE}), 45, new short[] {44, 48, 65, 50, 64, 43}, 63, convertToMap(new int[] {1, 1, 8, 15, 22, 28, 35, 42}, new Move[] {Move.TACKLE, Move.TAIL_WHIP, Move.BUBBLE, Move.WATER_GUN, Move.BITE, Move.WITHDRAW, Move.SKULL_BASH, Move.HYDRO_PUMP}), Type.WATER),
     BUTTERFREE("Butterfree", "012", 45, new short[] {60, 45, 50, 80, 80, 70}, 173, convertToMap(new int[] {1, 12, 15 , 16, 17, 21, 26, 32}, new Move[] {Move.CONFUSION, Move.CONFUSION, Move.POISONPOWDER, Move.STUN_SPORE, Move.SLEEP_POWDER, Move.SUPERSONIC, Move.WHIRLWIND, Move.PSYBEAM}), Type.BUG, Type.FLYING),
-    METAPOD("Metapod", "011", convertToMap(new int[] {10}, new Species[] {Species.BUTTERFREE}), 120, new short[] {50, 20, 55, 25, 25, 30}, 72, convertToMap(new int[] {1}, new Move[] {Move.HARDEN}), Type.BUG),
+    METAPOD("Metapod", "011", convertToMap(new int[] {10}, new Species[] {Species.BUTTERFREE}), 120, new short[] {50, 20, 55, 25, 25, 30}, 72, convertToMap(new int[] {1, 7}, new Move[] {Move.HARDEN, Move.HARDEN}), Type.BUG),
     CATERPIE("Caterpie", "010", convertToMap(new int[] {7}, new Species[] {Species.METAPOD}), 255, new short[] {45, 30, 35, 20, 20, 45}, 39, convertToMap(new int[] {1, 1}, new Move[] {Move.TACKLE, Move.STRING_SHOT}), Type.BUG),
     BEEDRILL("Beedrill", "015", 45, new short[] {65, 80, 40, 45, 80, 75}, 173, convertToMap(new int[] {1, 12, 16, 20, 25, 30, 35}, new Move[] {Move.FURY_ATTACK, Move.FURY_ATTACK, Move.FOCUS_ENERGY, Move.TWINEEDLE, Move.RAGE, Move.PIN_MISSILE, Move.AGILITY}), Type.BUG, Type.POISON),
     KAKUNA("Kakuna", "014", convertToMap(new int[] {10}, new Species[] {Species.BEEDRILL}), 120, new short[] {45, 25, 50, 25, 25, 35}, 72, convertToMap(new int[] {1}, new Move[] {Move.HARDEN}), Type.BUG, Type.POISON),
@@ -202,7 +202,7 @@ public enum Species {
 	}
 
 	/**
-	 * Set the HashMap
+	 * Set the Moveset to a HashMap 
 	 */
 	private static Map<Move, Integer> convertToMap(int[] a, Move[] b) {
 		Map<Move, Integer> m = new TreeMap<>();
@@ -214,6 +214,9 @@ public enum Species {
 		return m;
 	}
 
+	/**
+	 * Set the Evolve Species to HashMap
+	 */
 	private static Map<Species, Integer> convertToMap(int[] a, Species[] b) {
 		Map<Species, Integer> m = new TreeMap<>();
 		for (int i = 0; i < a.length; i++) {

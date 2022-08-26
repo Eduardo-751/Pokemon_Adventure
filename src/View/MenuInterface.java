@@ -48,6 +48,7 @@ public class MenuInterface extends JFrame {
 
         JButton btnContinue = new JButton("Continue");
         btnContinue.addActionListener((ActionEvent e) -> {
+        	
         });
         btnContinue.setFont(new Font("Old English Text MT", Font.BOLD, 35));
         btnContinue.setBounds(894, 776, 269, 64);

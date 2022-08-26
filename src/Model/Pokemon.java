@@ -99,8 +99,30 @@ public class Pokemon {
     //Function to increase Exp
     public void AddExp(int newExp) {
         CurrentExp += newExp;
+        CheckLvlUp();
     }
 
+    /**
+     * Check if the Pokemon Level up
+     */
+    public void CheckLvlUp() {
+        if (levelUp()) {
+            JOptionPane.showMessageDialog(null, getName() + " grew to Level: " + getLevel() + "!");
+            Evolve();
+            Move aux = canLearnNewMove();
+            if (aux != null) {
+                int dialogResult = JOptionPane.showConfirmDialog(null, "You Can Learning " + aux.getName() + "!", "Confirm", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    if (LearnNewMove(aux)) {
+                        JOptionPane.showMessageDialog(null, getName() + " Learned " + aux.getName() + "!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, getName() + " cannot learn " + aux.getName() + "!");
+                    }
+                }
+            }
+        }
+    }
+    
     //Function to Calculate Damage
     public void takeDamage(int damage) {
         InBattleStats[(byte) Stat.HP.ordinal()] -= (short) damage;

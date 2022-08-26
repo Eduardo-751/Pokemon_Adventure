@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Model.Location;
 import Model.Player;
 
 import javax.swing.ImageIcon;
@@ -144,28 +145,11 @@ public class MapInterface extends JFrame {
     }
 
     public void RefreshLocation() {
-        if (Player.getCurrentLocation().getLocationToNorth() == null) {
-            btnUp.setVisible(false);
-        } else {
-            btnUp.setVisible(true);
-        }
-        if (Player.getCurrentLocation().getLocationToSouth() == null) {
-            btnDown.setVisible(false);
-        } else {
-            btnDown.setVisible(true);
-        }
-        if (Player.getCurrentLocation().getLocationToEast() == null) {
-            btnRight.setVisible(false);
-        } else {
-            btnRight.setVisible(true);
-        }
-
-        if (Player.getCurrentLocation().getLocationToWest() == null) {
-            btnLeft.setVisible(false);
-        } else {
-            btnLeft.setVisible(true);
-        }
-
+    	btnUp.setVisible(!Location.NULL.equals(Player.getCurrentLocation().getLocationToNorth()));
+        btnDown.setVisible(!Location.NULL.equals(Player.getCurrentLocation().getLocationToSouth()));
+        btnRight.setVisible(!Location.NULL.equals(Player.getCurrentLocation().getLocationToEast()));
+        btnLeft.setVisible(!Location.NULL.equals(Player.getCurrentLocation().getLocationToWest()));
+ 
         lblCurrentLocation.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Location/" + Player.getCurrentLocation().getImgUrl() + ".png")));
         lblLocationName.setText(Player.getCurrentLocation().getImgUrl());
     }

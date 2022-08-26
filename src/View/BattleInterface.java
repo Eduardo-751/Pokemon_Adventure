@@ -9,7 +9,6 @@ import javax.swing.border.EmptyBorder;
 import Main.BattleManager;
 import Main.GameManager;
 import Model.Move;
-import Model.Player;
 import Model.Pokemon;
 import Model.Stat;
 
@@ -34,22 +33,22 @@ import javax.swing.ScrollPaneConstants;
 public class BattleInterface extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private int indice;
-	private boolean runAway = false;
-	private final Player player;
 	private final BattleManager battleManager;
 	private final Container PokemonStats, EnemyStats;
 	private final JPanel contentPane;
 	private final JLabel lblPP, lblPower, lblAccuracy;
 	private final JLabel lblChangePokemon;
-	private JButton[] btnMove = new JButton[4];
 	private final JLabel pokemonName = new JLabel(), enemyName = new JLabel();
 	private final JLabel lblPokemonHp = new JLabel(), lblEnemyHp = new JLabel();
-	private JLabel lblEnemySprite = new JLabel(), lblPokeSprite = new JLabel();
 	private final JProgressBar pokemonHealthBar = new JProgressBar(), enemyHealthBar = new JProgressBar();
-	public Container ContainerMenu = new Container(), ContainerFight = new Container(),
-			ContainerPokemon = new Container();
+	private JLabel lblEnemySprite = new JLabel(), lblPokeSprite = new JLabel();
+	private JButton[] btnMove = new JButton[4];
 	public JTextPane txtLog = new JTextPane();
+	public Container ContainerMenu = new Container(), 
+			 		 ContainerFight = new Container(), 
+			 		 ContainerPokemon = new Container();
+	private int indice;
+	private boolean runAway = false;
 
 	/**
 	 * Create the frame.
@@ -62,12 +61,13 @@ public class BattleInterface extends JFrame {
 			public void windowActivated(WindowEvent e) {
 				indice = bm.Indice;
 				if (battleManager.getOpponent() != null && battleManager.getPokemon() != null) {
-					RefreshUI(battleManager.getPokemon(), battleManager.getOpponent());
 					for (int i = 0; i < battleManager.getPokemon().getMoveSet().length; i++) {
 						if (btnMove[i] == null) {
 							ContainerFight.add(CreateMoveButtons(i));
+							CreateUI(bm.getPokemon(), bm.getOpponent());
 						}
 					}
+					RefreshUI(battleManager.getPokemon(), battleManager.getOpponent());
 				}
 			}
 
@@ -81,11 +81,11 @@ public class BattleInterface extends JFrame {
 				} else if (runAway) {
 					JOptionPane.showMessageDialog(null, "Got away safely!");
 				}
+				battleManager.getGameInterface().RefreshContainerStatus(battleManager.getPokemon());
 			}
 		});
 
 		battleManager = bm;
-		player = bm.getPlayer();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 960, 665);
@@ -104,11 +104,10 @@ public class BattleInterface extends JFrame {
 		contentPane.add(PokemonStats);
 
 		EnemyStats = new Container();
-		EnemyStats.setBounds(3, 2, 445, 135);
+		EnemyStats.setBounds(3, 2, 380, 90);
 		contentPane.add(EnemyStats);
 
 		lblPokeSprite = new JLabel("");
-		lblPokeSprite.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblPokeSprite.setBounds(55, 265, 160, 160);
 		contentPane.add(lblPokeSprite);
 
@@ -137,10 +136,10 @@ public class BattleInterface extends JFrame {
 
 		JButton btnCatch = new JButton("Catch");
 		btnCatch.addActionListener((ActionEvent e) -> {
-			if (player.getParty().length < 6) {
+			if (battleManager.getParty().length < 6) {
 				if (battleManager.getOpponent().calculateCatchRate(255)) {
 					JOptionPane.showMessageDialog(null, "You Capture " + battleManager.getOpponent().getName());
-					player.addToParty(battleManager.getOpponent());
+					battleManager.getPlayer().addToParty(battleManager.getOpponent());
 				} else {
 					JOptionPane.showMessageDialog(null, "The " + battleManager.getOpponent().getName() + " Run away!");
 				}
@@ -155,20 +154,11 @@ public class BattleInterface extends JFrame {
 		btnCatch.setBounds(729, 46, 216, 71);
 		ContainerMenu.add(btnCatch);
 
-		JButton btnFight = new JButton("Fight");
-		btnFight.addActionListener((ActionEvent e) -> {
-			ContainerMenu.setVisible(false);
-			ContainerFight.setVisible(true);
-		});
-		btnFight.setFont(new Font("Tahoma", Font.BOLD, 26));
-		btnFight.setBounds(502, 47, 216, 71);
-		ContainerMenu.add(btnFight);
-
 		JButton btnPokemon = new JButton("Pokemon");
 		btnPokemon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (battleManager.getPlayer().getParty().length > 1) {
+				if (battleManager.getParty().length > 1) {
 					ContainerMenu.setVisible(false);
 					ContainerPokemon.setVisible(true);
 					ChangePokemon();
@@ -178,6 +168,72 @@ public class BattleInterface extends JFrame {
 		btnPokemon.setFont(new Font("Tahoma", Font.BOLD, 26));
 		btnPokemon.setBounds(502, 129, 216, 71);
 		ContainerMenu.add(btnPokemon);
+		
+		JButton btnChoose = new JButton("Choose");
+		btnChoose.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (battleManager.getParty()[indice].getInBattleHp() <= 0) {
+					JOptionPane.showMessageDialog(null,
+							"Your Pokemon " + battleManager.getParty()[indice].getName() + " is Dead!");
+					indice = 0;
+					ChangePokemon();
+				} else {
+					JOptionPane.showMessageDialog(null, "Your Chosse " + battleManager.getParty()[indice].getName() + "!");
+					battleManager.setPokemon(battleManager.getParty()[indice]);
+					RefreshUI(battleManager.getPokemon(), battleManager.getOpponent());
+					ContainerFight.removeAll();
+					for (int i = 0; i < 4; i++) {
+						if (battleManager.getPokemon().getMoveSet().length > i)
+							ContainerFight.add(CreateMoveButtons(i));
+					}
+					ContainerPokemon.setVisible(false);
+					ContainerMenu.setVisible(true);
+				}
+			}
+		});
+		btnChoose.setBounds(431, 202, 90, 23);
+		ContainerPokemon.add(btnChoose);
+
+		JButton btnNext = new JButton("Next");
+		btnNext.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (indice == battleManager.getParty().length - 1) {
+					indice = 0;
+				} else {
+					indice++;
+				}
+				ChangePokemon();
+			}
+		});
+		btnNext.setBounds(531, 202, 90, 23);
+		ContainerPokemon.add(btnNext);
+
+		JButton btnPrevius = new JButton("btnPrevius");
+		btnPrevius.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (indice == 0) {
+					indice = battleManager.getParty().length - 1;
+				} else {
+					indice--;
+				}
+
+				ChangePokemon();
+			}
+		});
+		btnPrevius.setBounds(331, 202, 90, 23);
+		ContainerPokemon.add(btnPrevius);
+		
+		JButton btnFight = new JButton("Fight");
+		btnFight.addActionListener((ActionEvent e) -> {
+			ContainerMenu.setVisible(false);
+			ContainerFight.setVisible(true);
+		});
+		btnFight.setFont(new Font("Tahoma", Font.BOLD, 26));
+		btnFight.setBounds(502, 47, 216, 71);
+		ContainerMenu.add(btnFight);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -222,68 +278,6 @@ public class BattleInterface extends JFrame {
 		ContainerPokemon.setBounds(0, 425, 960, 240);
 		contentPane.add(ContainerPokemon);
 
-		JButton btnChoose = new JButton("Choose");
-		btnChoose.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (player.getParty()[indice].getInBattleHp() <= 0) {
-					JOptionPane.showMessageDialog(null,
-							"Your Pokemon " + player.getParty()[indice].getName() + " is Dead!");
-					indice = 0;
-					ChangePokemon();
-				} else {
-					JOptionPane.showMessageDialog(null,
-							"Your Chosse " + player.getParty()[indice].getName() + "!");
-					battleManager.setPokemon(player.getParty()[indice]);
-					RefreshUI(battleManager.getPokemon(), battleManager.getOpponent());
-					//if (battleManager.getOpponent() != null && battleManager.getPokemon() != null) {
-						RefreshUI(battleManager.getPokemon(), battleManager.getOpponent());
-						for (int i = 0; i < 4; i++) {
-							if (btnMove[i] != null) 
-								ContainerFight.remove(btnMove[i]);
-							if (battleManager.getPokemon().getMoveSet().length > i)
-								ContainerFight.add(CreateMoveButtons(i));
-						}
-					//}
-					ContainerPokemon.setVisible(false);
-					ContainerMenu.setVisible(true);
-				}
-			}
-		});
-		btnChoose.setBounds(431, 202, 90, 23);
-		ContainerPokemon.add(btnChoose);
-
-		JButton btnNext = new JButton("Next");
-		btnNext.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (indice == player.getParty().length - 1) {
-					indice = 0;
-				} else {
-					indice++;
-				}
-				ChangePokemon();
-			}
-		});
-		btnNext.setBounds(531, 202, 90, 23);
-		ContainerPokemon.add(btnNext);
-
-		JButton btnPrevius = new JButton("btnPrevius");
-		btnPrevius.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (indice == 0) {
-					indice = player.getParty().length - 1;
-				} else {
-					indice--;
-				}
-
-				ChangePokemon();
-			}
-		});
-		btnPrevius.setBounds(331, 202, 90, 23);
-		ContainerPokemon.add(btnPrevius);
-
 		lblChangePokemon = new JLabel("");
 		lblChangePokemon.setIcon(new ImageIcon(BattleInterface.class.getResource("/Img/Icon/004.png")));
 		lblChangePokemon.setBounds(361, 0, 238, 238);
@@ -304,36 +298,33 @@ public class BattleInterface extends JFrame {
 	 * @param opponent  The Random Pokemon finded in the Map
 	 */
 	public void CreateUI(Pokemon attacking, Pokemon opponent) {
-		try {
-			pokemonHealthBar.setForeground(Color.RED);
-			pokemonHealthBar.setBounds(20, 60, 400, 25);
-			PokemonStats.add(pokemonHealthBar);
+		pokemonHealthBar.setForeground(Color.RED);
+		pokemonHealthBar.setBounds(20, 60, 400, 25);
+		PokemonStats.add(pokemonHealthBar);
 
-			pokemonName.setVerticalAlignment(SwingConstants.TOP);
-			pokemonName.setFont(new Font("Tahoma", Font.BOLD, 20));
-			pokemonName.setBounds(20, 20, 400, 40);
-			PokemonStats.add(pokemonName);
+		pokemonName.setVerticalAlignment(SwingConstants.TOP);
+		pokemonName.setFont(new Font("Tahoma", Font.BOLD, 20));
+		pokemonName.setBounds(20, 20, 400, 40);
+		PokemonStats.add(pokemonName);
 
-			lblPokemonHp.setHorizontalAlignment(SwingConstants.LEFT);
-			lblPokemonHp.setFont(new Font("Tahoma", Font.PLAIN, 22));
-			lblPokemonHp.setBounds(10, 160, 178, 32);
-			PokemonStats.add(lblPokemonHp);
+		lblPokemonHp.setHorizontalAlignment(SwingConstants.LEFT);
+		lblPokemonHp.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblPokemonHp.setBounds(10, 160, 178, 32);
+		PokemonStats.add(lblPokemonHp);
 
-			enemyHealthBar.setForeground(Color.RED);
-			enemyHealthBar.setBounds(20, 60, 400, 25);
-			EnemyStats.add(enemyHealthBar);
+		enemyHealthBar.setForeground(Color.RED);
+		enemyHealthBar.setBounds(40, 50, 300, 20);
+		EnemyStats.add(enemyHealthBar);
 
-			enemyName.setFont(new Font("Tahoma", Font.BOLD, 20));
-			enemyName.setVerticalAlignment(SwingConstants.TOP);
-			enemyName.setBounds(20, 20, 400, 40);
-			EnemyStats.add(enemyName);
+		enemyName.setFont(new Font("Tahoma", Font.BOLD, 16));
+		enemyName.setVerticalAlignment(SwingConstants.TOP);
+		enemyName.setBounds(40, 20, 300, 30);
+		EnemyStats.add(enemyName);
 
-			lblEnemyHp.setHorizontalAlignment(SwingConstants.LEFT);
-			lblEnemyHp.setFont(new Font("Tahoma", Font.PLAIN, 22));
-			lblEnemyHp.setBounds(10, 160, 178, 32);
-			EnemyStats.add(lblEnemyHp);
-		} catch (Exception e) {
-		}
+		lblEnemyHp.setHorizontalAlignment(SwingConstants.LEFT);
+		lblEnemyHp.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblEnemyHp.setBounds(10, 160, 178, 32);
+		EnemyStats.add(lblEnemyHp);
 	}
 
 	/**
@@ -412,7 +403,7 @@ public class BattleInterface extends JFrame {
 	 */
 	public void ChangePokemon() {
 		boolean allDead = true;
-		for (Pokemon poke : battleManager.getPlayer().getParty()) {
+		for (Pokemon poke : battleManager.getParty()) {
 			if (!poke.isFainted()) {
 				allDead = false;
 			}
@@ -422,7 +413,7 @@ public class BattleInterface extends JFrame {
 			GameManager.PlaySound(1);
 			dispose();
 		} else {
-			lblChangePokemon.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + player.getParty()[indice].getSpecie().getDexNumber() + ".png")));
+			lblChangePokemon.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + battleManager.getParty()[indice].getSpecie().getDexNumber() + ".png")));
 		}
 	}
 }
