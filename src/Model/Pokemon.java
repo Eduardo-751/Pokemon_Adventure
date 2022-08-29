@@ -248,6 +248,12 @@ public class Pokemon {
     public Type[] getType() {
         return Specie.getType();
     }
+    public String getTypeName() {
+    	String str = "";
+    	for(Type t : Specie.getType())
+    		str += " " + t.name();
+    	return str;
+    }
     public int getExp() {
         return CurrentExp;
     }

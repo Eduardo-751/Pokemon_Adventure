@@ -45,11 +45,9 @@ public enum Type {
 	public boolean SuperEffective(Type t) {
 		return contains(SuperEffective, t);
 	}
-
 	public boolean NotVeryEffective(Type t) {
 		return contains(NotVeryEffective, t);
 	}
-
 	public boolean NoEffect(Type t) {
 		return contains(NoEffect, t);
 	}

@@ -81,7 +81,9 @@ public class BattleInterface extends JFrame {
 				} else if (runAway) {
 					JOptionPane.showMessageDialog(null, "Got away safely!");
 				}
+				battleManager.getGameInterface().RefreshContainerInfo(battleManager.getPokemon());
 				battleManager.getGameInterface().RefreshContainerStatus(battleManager.getPokemon());
+				battleManager.getGameInterface().RefreshContainerMove(battleManager.getPokemon());
 			}
 		});
 
