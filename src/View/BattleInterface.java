@@ -39,8 +39,10 @@ public class BattleInterface extends JFrame {
 	private final JLabel lblPP, lblPower, lblAccuracy;
 	private final JLabel lblChangePokemon;
 	private final JLabel pokemonName = new JLabel(), enemyName = new JLabel();
-	private final JLabel lblPokemonHp = new JLabel(), lblEnemyHp = new JLabel();
-	private final JProgressBar pokemonHealthBar = new JProgressBar(), enemyHealthBar = new JProgressBar();
+	private final JLabel lblPokemonHp = new JLabel();
+	private final JProgressBar pokemonHealthBar = new JProgressBar(), 
+							   enemyHealthBar = new JProgressBar(),
+							   pokemonXpBar = new JProgressBar();
 	private JLabel lblEnemySprite = new JLabel(), lblPokeSprite = new JLabel();
 	private JButton[] btnMove = new JButton[4];
 	public JTextPane txtLog = new JTextPane();
@@ -64,7 +66,6 @@ public class BattleInterface extends JFrame {
 					for (int i = 0; i < battleManager.getPokemon().getMoveSet().length; i++) {
 						if (btnMove[i] == null) {
 							ContainerFight.add(CreateMoveButtons(i));
-							CreateUI(bm.getPokemon(), bm.getOpponent());
 						}
 					}
 					RefreshUI(battleManager.getPokemon(), battleManager.getOpponent());
@@ -73,20 +74,27 @@ public class BattleInterface extends JFrame {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
+				Pokemon poke = battleManager.getPokemon();
 				if (battleManager.getOpponent().isFainted()) {
 					int aux = battleManager.calcExp(battleManager.getOpponent());
-					battleManager.getPokemon().AddExp(aux);
+					poke.AddExp(aux);
+					Move newMove = poke.NewMove();
+			        if(newMove != null) {
+			        	JOptionPane.showMessageDialog(null, "You Can Learning " + newMove.getName() + "!");
+			        	battleManager.getGameInterface().RefreshContainerNewMove(poke, newMove);
+			        }			
+					else {
+						battleManager.getGameInterface().RefreshContainerInfo(battleManager.getPokemon());
+						battleManager.getGameInterface().RefreshContainerStatus(battleManager.getPokemon());
+						battleManager.getGameInterface().RefreshContainerMove(battleManager.getPokemon());
+					}
 				} else if (battleManager.getPokemon().isFainted()) {
 					JOptionPane.showMessageDialog(null, "All your pokemon is Dead!");
 				} else if (runAway) {
 					JOptionPane.showMessageDialog(null, "Got away safely!");
 				}
-				battleManager.getGameInterface().RefreshContainerInfo(battleManager.getPokemon());
-				battleManager.getGameInterface().RefreshContainerStatus(battleManager.getPokemon());
-				battleManager.getGameInterface().RefreshContainerMove(battleManager.getPokemon());
 			}
 		});
-
 		battleManager = bm;
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,11 +110,11 @@ public class BattleInterface extends JFrame {
 		 * Create the Container Menu.
 		 */
 		PokemonStats = new Container();
-		PokemonStats.setBounds(512, 284, 445, 135);
+		PokemonStats.setBounds(515, 290, 445, 135);
 		contentPane.add(PokemonStats);
 
 		EnemyStats = new Container();
-		EnemyStats.setBounds(3, 2, 380, 90);
+		EnemyStats.setBounds(0, 0, 380, 90);
 		contentPane.add(EnemyStats);
 
 		lblPokeSprite = new JLabel("");
@@ -116,6 +124,8 @@ public class BattleInterface extends JFrame {
 		lblEnemySprite = new JLabel("");
 		lblEnemySprite.setBounds(746, 49, 160, 160);
 		contentPane.add(lblEnemySprite);
+		
+		CreateUI(bm.getPokemon(), bm.getOpponent());
 
 		/**
 		 * Create the Container Fight.
@@ -244,16 +254,17 @@ public class BattleInterface extends JFrame {
 		scrollPane.setViewportView(txtLog);
 
 		txtLog.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		ContainerFight.setLayout(null);
+		ContainerFight.setVisible(false);
 		ContainerFight.setVisible(false);
 		ContainerFight.setBounds(0, 425, 960, 240);
 		contentPane.add(ContainerFight);
-		ContainerFight.setLayout(null);
 
 		JPanel panelMoveDetails = new JPanel();
+		panelMoveDetails.setLayout(null);
 		panelMoveDetails.setBackground(Color.WHITE);
 		panelMoveDetails.setBounds(501, 21, 449, 198);
 		ContainerFight.add(panelMoveDetails);
-		panelMoveDetails.setLayout(null);
 
 		lblPP = new JLabel();
 		lblPP.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -276,19 +287,18 @@ public class BattleInterface extends JFrame {
 		lblDescription.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		lblDescription.setBounds(10, 11, 429, 54);
 		panelMoveDetails.add(lblDescription);
-		ContainerPokemon.setVisible(false);
+		
 		ContainerPokemon.setBounds(0, 425, 960, 240);
+		ContainerPokemon.setVisible(false);
 		contentPane.add(ContainerPokemon);
 
 		lblChangePokemon = new JLabel("");
-		lblChangePokemon.setIcon(new ImageIcon(BattleInterface.class.getResource("/Img/Icon/004.png")));
+		lblChangePokemon.setIcon(new ImageIcon(BattleInterface.class.getResource("/Img/Pokemon/Icon/004.png")));
 		lblChangePokemon.setBounds(361, 0, 238, 238);
 		ContainerPokemon.add(lblChangePokemon);
 
 		JLabel lblBackground = new JLabel("");
-		lblBackground.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBackground.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblBackground.setIcon(new ImageIcon(BattleInterface.class.getResource("/Img/battlegrass.png")));
+		lblBackground.setIcon(new ImageIcon(BattleInterface.class.getResource("/Img/Menu/Battle/battlegrass.png")));
 		lblBackground.setBounds(0, 0, 960, 425);
 		contentPane.add(lblBackground);
 	}
@@ -300,33 +310,42 @@ public class BattleInterface extends JFrame {
 	 * @param opponent  The Random Pokemon finded in the Map
 	 */
 	public void CreateUI(Pokemon attacking, Pokemon opponent) {
-		pokemonHealthBar.setForeground(Color.RED);
-		pokemonHealthBar.setBounds(20, 60, 400, 25);
-		PokemonStats.add(pokemonHealthBar);
-
 		pokemonName.setVerticalAlignment(SwingConstants.TOP);
 		pokemonName.setFont(new Font("Tahoma", Font.BOLD, 20));
-		pokemonName.setBounds(20, 20, 400, 40);
+		pokemonName.setBounds(71, 20, 349, 32);
 		PokemonStats.add(pokemonName);
-
-		lblPokemonHp.setHorizontalAlignment(SwingConstants.LEFT);
-		lblPokemonHp.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblPokemonHp.setBounds(10, 160, 178, 32);
+		
+		lblPokemonHp.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPokemonHp.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblPokemonHp.setBounds(202, 86, 197, 23);
 		PokemonStats.add(lblPokemonHp);
-
-		enemyHealthBar.setForeground(Color.RED);
-		enemyHealthBar.setBounds(40, 50, 300, 20);
-		EnemyStats.add(enemyHealthBar);
-
+		
+		pokemonHealthBar.setForeground(Color.RED);
+		pokemonHealthBar.setBounds(227, 60, 173, 18);
+		PokemonStats.add(pokemonHealthBar);
+		
 		enemyName.setFont(new Font("Tahoma", Font.BOLD, 16));
 		enemyName.setVerticalAlignment(SwingConstants.TOP);
-		enemyName.setBounds(40, 20, 300, 30);
+		enemyName.setBounds(5, 15, 300, 30);
 		EnemyStats.add(enemyName);
-
-		lblEnemyHp.setHorizontalAlignment(SwingConstants.LEFT);
-		lblEnemyHp.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblEnemyHp.setBounds(10, 160, 178, 32);
-		EnemyStats.add(lblEnemyHp);
+		
+		enemyHealthBar.setForeground(Color.RED);
+		enemyHealthBar.setBounds(169, 55, 144, 15);
+		EnemyStats.add(enemyHealthBar);
+		
+		pokemonXpBar.setForeground(Color.BLUE);
+		pokemonXpBar.setBounds(67, 118, 333, 9);
+		PokemonStats.add(pokemonXpBar);
+		
+		JLabel pokemonStatsBackground = new JLabel("");
+		pokemonStatsBackground.setIcon(new ImageIcon(BattleInterface.class.getResource("/Img/Menu/Battle/databox.png")));
+		pokemonStatsBackground.setBounds(0, 0, 445, 135);
+		PokemonStats.add(pokemonStatsBackground);
+		
+		JLabel enemyStatsBackground = new JLabel("");
+		enemyStatsBackground.setIcon(new ImageIcon(BattleInterface.class.getResource("/Img/Menu/Battle/databox_foe.png")));
+		enemyStatsBackground.setBounds(0, 0, 380, 90);
+		EnemyStats.add(enemyStatsBackground);
 	}
 
 	/**
@@ -336,19 +355,20 @@ public class BattleInterface extends JFrame {
 	 * @param opponent  The Target of the Pokemon
 	 */
 	public void RefreshUI(Pokemon attacking, Pokemon opponent) {
+		pokemonName.setText(attacking.getName() + "    Lvl: " + attacking.getLevel());
+		lblPokemonHp.setText(attacking.getInBattleHp() + " / " + attacking.getCurrentStat(Stat.HP));
 		pokemonHealthBar.setMaximum(attacking.getCurrentStat(Stat.HP));
 		pokemonHealthBar.setValue(attacking.getInBattleHp());
-		pokemonName.setText(attacking.getName() + "    Lvl: " + attacking.getLevel());
-		lblPokemonHp.setText(attacking.getInBattleHp() + "/" + attacking.getCurrentStat(Stat.HP));
+        pokemonXpBar.setMaximum(attacking.getExpToNextLvl() - attacking.getSpecie().calculateExp(attacking.getLevel()));
+        pokemonXpBar.setValue(attacking.getExp() - attacking.getSpecie().calculateExp(attacking.getLevel()));
 		lblPokeSprite.setIcon(new ImageIcon(
-				GameInterface.class.getResource("/Img/Back/" + attacking.getSpecie().name() + ".png")));
+				GameInterface.class.getResource("/Img/Pokemon/Back/" + attacking.getSpecie().name() + ".png")));
 
+		enemyName.setText(opponent.getName() + "    Lvl: " + opponent.getLevel());
 		enemyHealthBar.setMaximum(opponent.getCurrentStat(Stat.HP));
 		enemyHealthBar.setValue(opponent.getInBattleHp());
-		enemyName.setText(opponent.getName() + "    Lvl: " + opponent.getLevel());
-		lblEnemyHp.setText(opponent.getInBattleHp() + "/" + opponent.getCurrentStat(Stat.HP));
 		lblEnemySprite.setIcon(new ImageIcon(
-				GameInterface.class.getResource("/Img/Front/" + opponent.getSpecie().name() + ".png")));
+				GameInterface.class.getResource("/Img/Pokemon/Front/" + opponent.getSpecie().name() + ".png")));
 	}
 
 	/**
@@ -360,20 +380,21 @@ public class BattleInterface extends JFrame {
 	public JButton CreateMoveButtons(int indice) {
 		Move move = battleManager.getPokemon().getMoveSet()[indice];
 		btnMove[indice] = new JButton(move.getName());
-		btnMove[indice].addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ContainerFight.setVisible(false);
-				ContainerMenu.setVisible(true);
-				battleManager.UseMove(move);
-				move.downPP();
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				MoveDetails(move);
-			}
-		});
+		if(!Move.NULL.equals(move)) {
+			btnMove[indice].addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					ContainerFight.setVisible(false);
+					ContainerMenu.setVisible(true);
+					battleManager.UseMove(move);
+					move.downPP();
+				}
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					MoveDetails(move);
+				}
+			});
+		}
 		btnMove[indice].setFont(new Font("Tahoma", Font.BOLD, 16));
 		if (indice < 2) {
 			btnMove[indice].setBounds(50 + (226 * indice), 50, 216, 71);
@@ -415,7 +436,7 @@ public class BattleInterface extends JFrame {
 			GameManager.PlaySound(1);
 			dispose();
 		} else {
-			lblChangePokemon.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + battleManager.getParty()[indice].getSpecie().getDexNumber() + ".png")));
+			lblChangePokemon.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Pokemon/Icon/" + battleManager.getParty()[indice].getSpecie().getDexNumber() + ".png")));
 		}
 	}
 }

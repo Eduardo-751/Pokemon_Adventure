@@ -49,7 +49,7 @@ public class MapInterface extends JFrame {
         setUndecorated(true);
         contentPane.setLayout(null);
         setContentPane(contentPane);
-        lblLocationName.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/WoodPanel.png")));
+        lblLocationName.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Location/WoodPanel.png")));
         lblLocationName.setForeground(Color.BLACK);
         lblLocationName.setFont(new Font("Tahoma", Font.PLAIN, 18));
         lblLocationName.setBackground(Color.WHITE);
@@ -65,7 +65,7 @@ public class MapInterface extends JFrame {
         contentPane.add(lblCurrentLocation);
 
         btnUp.setAlignmentY(Component.TOP_ALIGNMENT);
-        btnUp.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/divisa-para-cima.png")));
+        btnUp.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Location/divisa-para-cima.png")));
         btnUp.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -83,7 +83,7 @@ public class MapInterface extends JFrame {
         btnUp.setBounds(130, 11, 50, 50);
         contentPane.add(btnUp);
 
-        btnLeft.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/divisa-esquerda.png")));
+        btnLeft.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Location/divisa-esquerda.png")));
         btnLeft.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -101,7 +101,7 @@ public class MapInterface extends JFrame {
         btnLeft.setBounds(10, 150, 50, 50);
         contentPane.add(btnLeft);
 
-        btnRight.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/divisa-direita.png")));
+        btnRight.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Location/divisa-direita.png")));
         btnRight.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -120,7 +120,7 @@ public class MapInterface extends JFrame {
         btnRight.setBounds(272, 150, 50, 50);
         contentPane.add(btnRight);
 
-        btnDown.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/divisa-para-baixo.png")));
+        btnDown.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Location/divisa-para-baixo.png")));
         btnDown.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

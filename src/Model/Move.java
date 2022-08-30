@@ -2,6 +2,7 @@ package Model;
 
 public enum Move {
 	
+	NULL("-", null, null, (byte)0, 0, (byte)0),
 	ABSORB("Absorb", Type.GRASS, MoveType.SPECIAL, (byte)25, 20, (byte)100),
 	ACID("Acid", Type.POISON, MoveType.SPECIAL, (byte)30, 40, (byte)100),
 	ACID_ARMOR("Acid Armor", Type.POISON, MoveType.STATUS, (byte)40, -1, (byte)100, new short[] {0, 0, 2, 0, 2, 0}),

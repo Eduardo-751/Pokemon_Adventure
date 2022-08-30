@@ -45,20 +45,19 @@ public class ChoiseInterface extends JFrame {
         contentPane.add(lblStarter);
         
         starter[0] = new JLabel();
-        starter[0].setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
         starter[0].setBounds(157, 235, 149, 152);
         contentPane.add(starter[0]);
         
         starter[1] = new JLabel();
-        starter[1].setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
         starter[1].setBounds(338, 304, 149, 152);
         contentPane.add(starter[1]);
 
         starter[2] = new JLabel();
-        starter[2].setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
         starter[2].setBounds(513, 235, 149, 152);
         contentPane.add(starter[2]);
 
+        RefreshUI(null);
+        
         starter[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -69,7 +68,7 @@ public class ChoiseInterface extends JFrame {
             }
             @Override
             public void mouseEntered(MouseEvent e) {
-                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Icon/001.png")));
+                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Pokemon/Icon/001.png")));
                 RefreshUI(starter[0]);
             }
         });
@@ -85,7 +84,7 @@ public class ChoiseInterface extends JFrame {
             }
             @Override
             public void mouseEntered(MouseEvent e) {
-                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Icon/004.png")));
+                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Pokemon/Icon/004.png")));
                 RefreshUI(starter[1]);
             }
         });
@@ -100,13 +99,13 @@ public class ChoiseInterface extends JFrame {
             }
             @Override
             public void mouseEntered(MouseEvent e) {
-                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Icon/007.png")));
+                lblStarter.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Pokemon/Icon/007.png")));
                 RefreshUI(starter[2]);
             }
         });
 
         JLabel lblChossePokemon = new JLabel("");
-        lblChossePokemon.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/ChoosePokemon.png")));
+        lblChossePokemon.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Menu/Choose/ChoosePokemon.png")));
         lblChossePokemon.setBounds(0, 0, 800, 480);
         contentPane.add(lblChossePokemon);
     }
@@ -123,9 +122,9 @@ public class ChoiseInterface extends JFrame {
     public void RefreshUI(JLabel selected) {
     	for(JLabel s : starter) {
     		if(s == selected)
-    			s.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Open.png")));
+    			s.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Menu/Choose/Open.png")));
     		else
-    			s.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Close.png")));
+    			s.setIcon(new ImageIcon(ChoiseInterface.class.getResource("/Img/Menu/Choose/Close.png")));
     	}
     }
 }

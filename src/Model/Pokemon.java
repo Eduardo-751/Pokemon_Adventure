@@ -8,7 +8,7 @@ public class Pokemon {
 
     private Species Specie;
     private byte Level;
-    private final Move[] MoveSet = new Move[4];
+    private Move[] MoveSet = new Move[4];
   //HP, Attack, Defense, Sp. Attack, Sp. Defense, Speed
     private int[] CurrentStats;
     private int[] InBattleStats;
@@ -49,17 +49,19 @@ public class Pokemon {
         System.arraycopy(CurrentStats, 0, InBattleStats, 0, CurrentStats.length);
         initializeMoves();
     }
-
-    /**
-     * Function that checks if your pokemon Level Up
-     *
-     * @return
-     */
-    public boolean levelUp() {
+	
+    //Function to increase Exp
+    public void AddExp(int newExp) {
+        CurrentExp += newExp;
+        levelUp();
+    }
+    
+    //Function that checks if your pokemon Level Up
+    public void levelUp() {
         if (CurrentExp >= ExpToNextLvl) {
             Level++;
             ExpToNextLvl = Specie.calculateExp(Level + 1);
-
+            JOptionPane.showMessageDialog(null, getName() + " grew to Level: " + getLevel() + "!");
             System.arraycopy(CurrentStats, 0, InBattleStats, 0, CurrentStats.length);
 
             //Update the Stats
@@ -70,13 +72,28 @@ public class Pokemon {
                 CalculateStat(Stat.SP_ATTACK),
                 CalculateStat(Stat.SP_DEFENSE),
                 CalculateStat(Stat.SPEED)};
+            
             Revive();
-            return true;
+            Evolve();
         }
-        return false;
+    }
+    
+    //Function that checks if your pokemon Learn a new Move
+    public Move NewMove() {
+        for (Move m : Specie.getLearnset().keySet()) {
+            if (Specie.getLearnset().get(m) == Level && !Arrays.asList(getMoveSet()).contains(m)) {
+                return m;
+            }
+        }
+        return null;
+    }
+    
+    public void LearnNewMove(Move newMove, int i) {
+    	MoveSet[i] = newMove;
     }
 
-    //Function to Change de Specie of the Pokemon
+    
+    //Function that checks if your pokemon Evolve
 	public void Evolve() {
 		if(!Specie.hasEvolution()) {
         	if(Specie.getEvolutionLevel() <= Level) {
@@ -91,38 +108,12 @@ public class Pokemon {
         	                CalculateStat(Stat.SP_ATTACK),
         	                CalculateStat(Stat.SP_DEFENSE),
         	                CalculateStat(Stat.SPEED)};
+        			Revive();
                 }
         	}
         }
 	}
 	
-    //Function to increase Exp
-    public void AddExp(int newExp) {
-        CurrentExp += newExp;
-        CheckLvlUp();
-    }
-
-    /**
-     * Check if the Pokemon Level up
-     */
-    public void CheckLvlUp() {
-        if (levelUp()) {
-            JOptionPane.showMessageDialog(null, getName() + " grew to Level: " + getLevel() + "!");
-            Evolve();
-            Move aux = canLearnNewMove();
-            if (aux != null) {
-                int dialogResult = JOptionPane.showConfirmDialog(null, "You Can Learning " + aux.getName() + "!", "Confirm", JOptionPane.YES_NO_OPTION);
-                if (dialogResult == JOptionPane.YES_OPTION) {
-                    if (LearnNewMove(aux)) {
-                        JOptionPane.showMessageDialog(null, getName() + " Learned " + aux.getName() + "!");
-                    } else {
-                        JOptionPane.showMessageDialog(null, getName() + " cannot learn " + aux.getName() + "!");
-                    }
-                }
-            }
-        }
-    }
-    
     //Function to Calculate Damage
     public void takeDamage(int damage) {
         InBattleStats[(byte) Stat.HP.ordinal()] -= (short) damage;
@@ -157,39 +148,16 @@ public class Pokemon {
 
     //Function to Pick in the HashMao the Move Set
     private void initializeMoves() {
-        for (Move m : Specie.getLearnset().keySet()) {
-            if (Specie.getLearnset().get(m) <= Level) {
-                for (int i = 0; i < MoveSet.length; i++) {
-                    if (MoveSet[i] == null) {
-                        MoveSet[i] = m;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    //Function to Learn the Move
-    public boolean LearnNewMove(Move m) {
-        boolean aux = false;
-        for (int i = 0; i < MoveSet.length; i++) {
-            if (MoveSet[i] == null) {
-                MoveSet[i] = m;
-                aux = true;
-                break;
-            }
-        }
-        return aux;
-    }
-
-    //Function to Check if have move to Learn
-    public Move canLearnNewMove() {
-        for (Move m : Specie.getLearnset().keySet()) {
-            if (Specie.getLearnset().get(m) == Level) {
-                return m;
-            }
-        }
-        return null;
+    	for (int i = 0; i < 4; i++) {
+    		for (Move m : Specie.getLearnset().keySet()) {
+    			 if (Specie.getLearnset().get(m) <= Level && !Arrays.asList(getMoveSet()).contains(m)) {
+    				 MoveSet[i] = m;
+    				 break;
+    			 }
+    			 else 
+    				 MoveSet[i] = Move.NULL;
+    		}
+    	}
     }
 
     //Function to Calculate The capture method in Generation I

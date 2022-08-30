@@ -64,7 +64,7 @@ public class MenuInterface extends JFrame {
         
         JLabel lblBackground = new JLabel("");
         lblBackground.setBounds(0, -15, 1920, 1108);
-        lblBackground.setIcon(new ImageIcon(MenuInterface.class.getResource("/Img/wallpaperMenu.jpg")));
+        lblBackground.setIcon(new ImageIcon(MenuInterface.class.getResource("/Img/Menu/Choose/wallpaperMenu.jpg")));
         contentPane.add(lblBackground);
     }
 }

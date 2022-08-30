@@ -3,8 +3,6 @@ package Model;
 import java.util.Arrays;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
-
 public class Player {
 
     private final int Money;
@@ -29,27 +27,6 @@ public class Player {
             }
         }        
         return null;
-    }
-    
-    /**
-     * Check if the Pokemon Level up
-     */
-    public void CheckLvlUp(Pokemon p) {
-        if (p.levelUp()) {
-            JOptionPane.showMessageDialog(null, p.getName() + " grew to Level: " + p.getLevel() + "!");
-            p.Evolve();
-            Move aux = p.canLearnNewMove();
-            if (aux != null) {
-                int dialogResult = JOptionPane.showConfirmDialog(null, "You Can Learning " + aux.getName() + "!", "Confirm", JOptionPane.YES_NO_OPTION);
-                if (dialogResult == JOptionPane.YES_OPTION) {
-                    if (p.LearnNewMove(aux)) {
-                        JOptionPane.showMessageDialog(null, p.getName() + " Learned " + aux.getName() + "!");
-                    } else {
-                        JOptionPane.showMessageDialog(null, p.getName() + " cannot learn " + aux.getName() + "!");
-                    }
-                }
-            }
-        }
     }
 
     /**

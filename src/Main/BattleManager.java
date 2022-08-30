@@ -42,10 +42,11 @@ public class BattleManager {
 	public void UseMove(Move move) {
 		Move opponentMove;
 		if (move.getCurrentPP() > 0) {
-			if(opponentPokemon.getMoveSet().length == 1)
+			if (opponentPokemon.getMoveSet().length == 1)
 				opponentMove = opponentPokemon.getMoveSet()[0];
 			else
-				opponentMove = opponentPokemon.getMoveSet()[(byte) (Math.random() * opponentPokemon.getMoveSet().length)];
+				opponentMove = opponentPokemon
+						.getMoveSet()[(byte) (Math.random() * opponentPokemon.getMoveSet().length)];
 			if (playerPokemon.getInBattleStat(Stat.SPEED) >= opponentPokemon.getInBattleStat(Stat.SPEED))
 				ProcessMoveInOrder(playerPokemon, move, opponentPokemon, opponentMove);
 			else
@@ -104,7 +105,7 @@ public class BattleManager {
 				BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Used  " + move.getName() + "!\nDid " + Damage + " Damage!\n" + str + "\n");
 			}
 		} else {
-			BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Miss" + str + "\n");
+			BattleUi.txtLog.setText(BattleUi.txtLog.getText() + pokemon.getName() + " Miss\n" + str + "\n");
 		}
 		return Damage;
 	}
