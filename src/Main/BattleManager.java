@@ -32,7 +32,7 @@ public class BattleManager {
 		opponentPokemon = opponent;
 		party = p.getParty();
 		BattleUi = new BattleInterface(this);
-		BattleUi.setVisible(true);
+    	GameManager.AddControlFrame(BattleUi);
 		GameUI = gi;
 	}
 

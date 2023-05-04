@@ -1,7 +1,7 @@
 package View;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -16,7 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
-public class ChoiseInterface extends JFrame {
+public class ChoiseInterface extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
     private final JPanel contentPane;
@@ -28,18 +28,16 @@ public class ChoiseInterface extends JFrame {
      *
      * @param p the Player Create by the GameManager
      */
-    public ChoiseInterface(Player p) {
-        player = p;
+    public ChoiseInterface() {
+    	setBorder(null);
+        player = GameManager.getPlayer();
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(0, 0, 800, 480);
+        setBounds(560, 300, 800, 480);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-        setUndecorated(true);
         contentPane.setLayout(null);
-        setLocationRelativeTo(null);
         setContentPane(contentPane);
-
+        
         JLabel lblStarter = new JLabel("");
         lblStarter.setBounds(285, 55, 238, 238);
         contentPane.add(lblStarter);
@@ -76,7 +74,6 @@ public class ChoiseInterface extends JFrame {
         starter[1].addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
                 int dialogResult = JOptionPane.showConfirmDialog(null, "You Choose Charmander", "Confirm", JOptionPane.YES_NO_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
                     ChangeToGame(Species.CHARMANDER);
@@ -114,8 +111,11 @@ public class ChoiseInterface extends JFrame {
     	player.addToParty(new Pokemon(species, 5));
         GameManager.StopSound();
         GameManager.PlaySound(1);
+        GameManager.RemoveControlFrame(this);
         GameInterface frame = new GameInterface(player);
-        frame.setVisible(true);
+        GameManager.AddControlFrame(frame);
+        MapInterface mapFrame = new MapInterface(player);
+        GameManager.AddControlFrame(mapFrame);
         dispose();
     }
     

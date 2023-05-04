@@ -1,16 +1,16 @@
 package View;
 
-import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 import Model.Location;
 import Model.Player;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,7 +20,7 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JOptionPane;
 
-public class MapInterface extends JFrame {
+public class MapInterface extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Player Player;
@@ -35,20 +35,20 @@ public class MapInterface extends JFrame {
      * @param p the Player Create by the GameManager
      */
     public MapInterface(Player p) {
+    	setBorder(null);
         Player = p;
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowActivated(WindowEvent e) {
+        addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameActivated(InternalFrameEvent e) {
                 RefreshLocation();
             }
         });
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(20, 20, 335, 305);
+        setBounds(63, 388, 335, 305);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-        setUndecorated(true);
         contentPane.setLayout(null);
         setContentPane(contentPane);
+        
         lblLocationName.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Location/WoodPanel.png")));
         lblLocationName.setForeground(Color.BLACK);
         lblLocationName.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -80,7 +80,7 @@ public class MapInterface extends JFrame {
                 }
             }
         });
-        btnUp.setBounds(130, 11, 50, 50);
+        btnUp.setBounds(134, 11, 50, 50);
         contentPane.add(btnUp);
 
         btnLeft.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Location/divisa-esquerda.png")));
@@ -98,7 +98,7 @@ public class MapInterface extends JFrame {
                 }
             }
         });
-        btnLeft.setBounds(10, 150, 50, 50);
+        btnLeft.setBounds(10, 122, 50, 50);
         contentPane.add(btnLeft);
 
         btnRight.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Location/divisa-direita.png")));
@@ -117,7 +117,7 @@ public class MapInterface extends JFrame {
             }
 
         });
-        btnRight.setBounds(272, 150, 50, 50);
+        btnRight.setBounds(272, 122, 50, 50);
         contentPane.add(btnRight);
 
         btnDown.setIcon(new ImageIcon(MapInterface.class.getResource("/Img/Location/divisa-para-baixo.png")));
@@ -135,7 +135,7 @@ public class MapInterface extends JFrame {
                 }
             }
         });
-        btnDown.setBounds(130, 227, 50, 50);
+        btnDown.setBounds(134, 221, 50, 50);
         contentPane.add(btnDown);
 
         JLabel lblBackground = new JLabel("");

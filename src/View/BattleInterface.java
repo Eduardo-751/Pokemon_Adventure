@@ -2,9 +2,11 @@ package View;
 
 import java.awt.Container;
 
-import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 import Main.BattleManager;
 import Main.GameManager;
@@ -25,12 +27,10 @@ import javax.swing.JTextPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-public class BattleInterface extends JFrame {
+public class BattleInterface extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	private final BattleManager battleManager;
@@ -58,9 +58,10 @@ public class BattleInterface extends JFrame {
 	 * @param bm The Class Battle Manager
 	 */
 	public BattleInterface(BattleManager bm) {
-		addWindowListener(new WindowAdapter() {
+		setBorder(null);
+		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
-			public void windowActivated(WindowEvent e) {
+			public void internalFrameActivated(InternalFrameEvent e) {
 				indice = bm.Indice;
 				if (battleManager.getOpponent() != null && battleManager.getPokemon() != null) {
 					for (int i = 0; i < battleManager.getPokemon().getMoveSet().length; i++) {
@@ -73,7 +74,7 @@ public class BattleInterface extends JFrame {
 			}
 
 			@Override
-			public void windowClosed(WindowEvent e) {
+			public void internalFrameClosed(InternalFrameEvent e) {
 				Pokemon poke = battleManager.getPokemon();
 				if (battleManager.getOpponent().isFainted()) {
 					int aux = battleManager.calcExp(battleManager.getOpponent());
@@ -93,36 +94,34 @@ public class BattleInterface extends JFrame {
 				} else if (runAway) {
 					JOptionPane.showMessageDialog(null, "Got away safely!");
 				}
+				battleManager.getGameInterface().CreateTabbedPane();
 			}
 		});
 		battleManager = bm;
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 960, 665);
+		setBounds(460, 180, 1000, 720);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setUndecorated(true);
 		contentPane.setLayout(null);
-		setLocationRelativeTo(null);
 		setContentPane(contentPane);
 
 		/**
 		 * Create the Container Menu.
 		 */
 		PokemonStats = new Container();
-		PokemonStats.setBounds(515, 290, 445, 135);
+		PokemonStats.setBounds(531, 308, 445, 135);
 		contentPane.add(PokemonStats);
 
 		EnemyStats = new Container();
-		EnemyStats.setBounds(0, 0, 380, 90);
+		EnemyStats.setBounds(16, 18, 380, 90);
 		contentPane.add(EnemyStats);
 
 		lblPokeSprite = new JLabel("");
-		lblPokeSprite.setBounds(55, 265, 160, 160);
+		lblPokeSprite.setBounds(71, 283, 160, 160);
 		contentPane.add(lblPokeSprite);
 
 		lblEnemySprite = new JLabel("");
-		lblEnemySprite.setBounds(746, 49, 160, 160);
+		lblEnemySprite.setBounds(762, 67, 160, 160);
 		contentPane.add(lblEnemySprite);
 		
 		CreateUI(bm.getPokemon(), bm.getOpponent());
@@ -131,7 +130,7 @@ public class BattleInterface extends JFrame {
 		 * Create the Container Fight.
 		 */
 		ContainerMenu.setEnabled(false);
-		ContainerMenu.setBounds(0, 425, 960, 240);
+		ContainerMenu.setBounds(17, 456, 960, 240);
 		contentPane.add(ContainerMenu);
 		ContainerMenu.setLayout(null);
 
@@ -257,7 +256,7 @@ public class BattleInterface extends JFrame {
 		ContainerFight.setLayout(null);
 		ContainerFight.setVisible(false);
 		ContainerFight.setVisible(false);
-		ContainerFight.setBounds(0, 425, 960, 240);
+		ContainerFight.setBounds(17, 456, 960, 240);
 		contentPane.add(ContainerFight);
 
 		JPanel panelMoveDetails = new JPanel();
@@ -288,7 +287,7 @@ public class BattleInterface extends JFrame {
 		lblDescription.setBounds(10, 11, 429, 54);
 		panelMoveDetails.add(lblDescription);
 		
-		ContainerPokemon.setBounds(0, 425, 960, 240);
+		ContainerPokemon.setBounds(17, 456, 960, 240);
 		ContainerPokemon.setVisible(false);
 		contentPane.add(ContainerPokemon);
 
@@ -299,7 +298,7 @@ public class BattleInterface extends JFrame {
 
 		JLabel lblBackground = new JLabel("");
 		lblBackground.setIcon(new ImageIcon(BattleInterface.class.getResource("/Img/Menu/Battle/battlegrass.png")));
-		lblBackground.setBounds(0, 0, 960, 425);
+		lblBackground.setBounds(16, 18, 960, 425);
 		contentPane.add(lblBackground);
 	}
 

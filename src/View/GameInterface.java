@@ -2,7 +2,7 @@ package View;
 
 import java.awt.Container;
 
-import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -22,16 +22,16 @@ import javax.swing.JTabbedPane;
 import java.awt.Font;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Arrays;
 
 import javax.swing.JProgressBar;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
-public final class GameInterface extends JFrame {
+public final class GameInterface extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
     private final Player player;
@@ -73,24 +73,22 @@ public final class GameInterface extends JFrame {
      * Create the frame.
      */
     public GameInterface(Player p) {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowActivated(WindowEvent e) {
-				if(player.getParty().length > tabbedPane.getTabCount()) {
-					CreateTabbedPane(tabbedPane.getTabCount());
+    	setBorder(null);
+    	addInternalFrameListener(new InternalFrameAdapter() {
+    		@Override
+    		public void internalFrameOpened(InternalFrameEvent e) {
+    			if(player.getParty().length > tabbedPane.getTabCount()) {
+					CreateTabbedPane();
 					RefreshContainerInfo(player.getParty()[tabbedPane.getSelectedIndex()]);
 				}
-			}
-        });
-        
+    		}
+    	});
         player = p;
         player.getCurrentLocation().CreateGridMap();
         MapUi = new MapInterface(player);
         MapUi.setVisible(true);
         
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(20, 330, 1000, 720);
-        setUndecorated(true);
+        setBounds(460, 180, 1000, 720);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
         contentPane.setLayout(null);
@@ -136,7 +134,7 @@ public final class GameInterface extends JFrame {
         //Button to open the Shop Frame
         JButton btnStore = new JButton("Store");
         btnStore.addActionListener((ActionEvent e) -> {
-            
+        	//Criar tela de Venda
         });
         btnStore.setBounds(10, 11, 272, 55);
         contentPane.add(btnStore);
@@ -144,7 +142,6 @@ public final class GameInterface extends JFrame {
         //Button to Call the frame of the Battle
         JButton btnBattle = new JButton("Battle");
         btnBattle.addActionListener((ActionEvent e) -> {
-            
             if (player.getParty()[tabbedPane.getSelectedIndex()].isFainted()) {
                 JOptionPane.showMessageDialog(null, "Your Pokemon " + player.getParty()[tabbedPane.getSelectedIndex()].getName() + "is Dead!");
             } else if (player.getCurrentLocation().PokemonsLivingHere()) {
@@ -190,16 +187,18 @@ public final class GameInterface extends JFrame {
 	/**
      * Create the Tabbed Pane.
      */
-    public void CreateTabbedPane(int indice) {
-    	
-		tabbedPane.addTab("Pokemon - " + (indice + 1), null);
-		tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
-		    public void stateChanged(javax.swing.event.ChangeEvent evt) {
-		    	RefreshContainerInfo(player.getParty()[tabbedPane.getSelectedIndex()]);
-		    	RefreshContainerStatus(player.getParty()[tabbedPane.getSelectedIndex()]);
-		    	RefreshContainerMove(player.getParty()[tabbedPane.getSelectedIndex()]);
-		    }
-		});
+    public void CreateTabbedPane() {
+    	if(player.getParty().length > tabbedPane.getTabCount()) {
+	    	int indice = tabbedPane.getTabCount();
+			tabbedPane.addTab("Pokemon - " + (indice + 1), null);
+			tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
+			    public void stateChanged(javax.swing.event.ChangeEvent evt) {
+			    	RefreshContainerInfo(player.getParty()[tabbedPane.getSelectedIndex()]);
+			    	RefreshContainerStatus(player.getParty()[tabbedPane.getSelectedIndex()]);
+			    	RefreshContainerMove(player.getParty()[tabbedPane.getSelectedIndex()]);
+			    }
+			});
+    	}
     }
     
     /**
@@ -225,7 +224,7 @@ public final class GameInterface extends JFrame {
         lblExpNextLv.setText(String.valueOf(poke.getExpToNextLvl()-poke.getExp()));
         xpBar.setMaximum(poke.getExpToNextLvl() - poke.getSpecie().calculateExp(poke.getLevel()));
         xpBar.setValue(poke.getExp() - poke.getSpecie().calculateExp(poke.getLevel()));
-        lblImg.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
+        lblImg.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Pokemon/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
     }
     
     /**
@@ -301,7 +300,7 @@ public final class GameInterface extends JFrame {
         lblSpeed.setText(String.valueOf(poke.getCurrentStat(Stat.SPEED)));
         hpBar.setMaximum(poke.getCurrentStat(Stat.HP));
         hpBar.setValue(poke.getInBattleStat(Stat.HP));
-        lblImg.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
+        lblImg.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Pokemon/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
     }
     
     /**
@@ -382,7 +381,7 @@ public final class GameInterface extends JFrame {
     			lblMovePP[i].setText("PP    " + m.getCurrentPP() + "/" + m.getTotalPP());
         	}
         }
-        lblImg.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
+        lblImg.setIcon(new ImageIcon(GameInterface.class.getResource("/Img/Pokemon/Icon/" + poke.getSpecie().getDexNumber() + ".png")));
     }
     
     /**
