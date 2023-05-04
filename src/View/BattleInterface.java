@@ -146,7 +146,7 @@ public class BattleInterface extends JInternalFrame {
 		ContainerMenu.add(btnRun);
 
 		JButton btnCatch = new JButton("Catch");
-		btnCatch.addActionListener((ActionEvent e) -> {
+		btnCatch.addActionListener((ActionEvent e) -> { 
 			if (battleManager.getParty().length < 6) {
 				if (battleManager.getOpponent().calculateCatchRate(255)) {
 					JOptionPane.showMessageDialog(null, "You Capture " + battleManager.getOpponent().getName());
